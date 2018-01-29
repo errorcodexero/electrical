@@ -13,4 +13,5 @@ void loop() {
 	double duty_cycle = calculate_duty_cycle(input_pin);
 	Serial.println(duty_cycle);
 	robot_info.update(duty_cycle);
+	robot_info.print();
 }
