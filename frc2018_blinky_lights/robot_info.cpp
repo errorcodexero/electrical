@@ -42,7 +42,7 @@ void Robot_info::update(double duty_cylce){
 			alliance = INVALID;
 			break;
 		default:
-			lifter_height = (value - 7)/3;
+			lifter_height = (value - 7) * 3;
 	}
 }
 
