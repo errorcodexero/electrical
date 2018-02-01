@@ -10,7 +10,7 @@
 using namespace std;
 
 Robot_info::Robot_info(unsigned h,bool c,bool m,Alliance a):lifter_height(h),climbing(c),autonomous(m),alliance(a){}
-Robot_info::Robot_info():Robot_info(0,false,false,Alliance::INVALID){}
+Robot_info::Robot_info():Robot_info(0,false,false,INVALID){}
 
 void Robot_info::update(double duty_cylce){
 	const double PWM_RANGE = 2.0;
@@ -33,16 +33,16 @@ void Robot_info::update(double duty_cylce){
 			autonomous = true;
 			break;
 		case 4: 
-			alliance = Alliance::INVALID;
+			alliance = RED;
 			break;
 		case 5:
-			alliance = Alliance::RED;
+			alliance = BLUE;
 			break;
 		case 6:
-			alliance = Alliance::BLUE;
+			alliance = INVALID;
 			break;
 		default:
-			lifter_height = value - 7;
+			lifter_height = (value - 7)/3;
 	}
 }
 
@@ -57,13 +57,13 @@ void Robot_info::print()const{
 	Serial.print(autonomous);
 	Serial.print("alliance:");
 	switch(alliance){
-		case Alliance::INVALID:
+		case INVALID:
 			Serial.println("INVALID");
 			break;
-		case Alliance::BLUE:
+		case BLUE:
 			Serial.println("BLUE");
 			break;
-		case Alliance::RED:
+		case RED:
 			Serial.println("RED");
 			break;
 		default:
@@ -75,11 +75,11 @@ void Robot_info::print()const{
 		
 	string s = [&]{
 		switch(alliance){
-			case Alliance::INVALID:
+			case INVALID:
 				return "INVALID";
-			case Alliance::BLUE:
+			case BLUE:
 				return "BLUE";
-			case Alliance::RED:
+			case RED:
 				return "RED";
 			default:
 				assert(0);
