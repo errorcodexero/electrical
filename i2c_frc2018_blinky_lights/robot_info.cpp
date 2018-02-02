@@ -13,9 +13,9 @@ Robot_info::Robot_info(unsigned h,bool c,bool m,Alliance a):lifter_height(h),cli
 Robot_info::Robot_info():Robot_info(0,false,false,INVALID){}
 
 void Robot_info::update(double duty_cylce){
-	const double PWM_RANGE = 2.0;
+	const double PWM_RANGE = 1.0;
 	const double INCREMENT = PWM_RANGE / (double)Robot_info::INFO_STATES;
-	const double STARTING_VALUE = -1.0;
+	const double STARTING_VALUE = 0.0;
 	
 	int value = ((duty_cylce - STARTING_VALUE) / INCREMENT);
 	
@@ -55,7 +55,7 @@ void Robot_info::print()const{
 	Serial.print(climbing);
 	Serial.print(" autonomous:");
 	Serial.print(autonomous);
-	Serial.print("alliance:");
+	Serial.print(" alliance:");
 	switch(alliance){
 		case INVALID:
 			Serial.println("INVALID");
