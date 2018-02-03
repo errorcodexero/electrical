@@ -4,25 +4,39 @@
 /*
  * Arduino I2C pins
  * 
- * A4 - SDA
- * A5 - SCL
+ * A4 - SDA (Black)
+ * A5 - SCL (Brown)
  */
 
 Robot_info robot_info;
+const byte ROBORIO_ID = 8;
 
 void setup() {
-	Serial.begin(9600);
-	Wire.begin();
+  Wire.begin(8);
+  Wire.onReceive(receive_event);
+  Serial.begin(9600);
+  Serial.println("hello world");
 }
 
 void loop() {
-  const unsigned ROBORIO_ID = 8;
-  const byte BYTES_TO_RECIEVE = 6;
-  Wire.requestFrom(ROBORIO_ID, BYTES_TO_RECIEVE);
-  while(Wire.available()){
-    int i = Wire.read();
-    Serial.print(i);
+  delay(100);
+  robot_info.print();
+}
+
+void receive_event(int number_received){
+  int received[number_received];
+  int i = 0;
+  while (0 < Wire.available()){ // loop through all 
+    int x  = Wire.read();
+    received[i] = x;
+    //Serial.println(received[i]);
+    i++;
   }
-  //robot_info.update(0);
- // robot_info.print();
+  robot_info.update(
+    received[0],
+    received[1],
+    received[2],
+    received[3],
+    received[4]
+  );
 }

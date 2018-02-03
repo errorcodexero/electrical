@@ -8,14 +8,15 @@ struct Robot_info{
 	unsigned lifter_height;
 	bool climbing;
 	bool autonomous;
+  bool enabled;
 	Alliance alliance;
 
-	void update(double);//takes a pwm value and updates robot info
+	void update(int,int,int,int,int);
 	
 	void print()const;
 	
 	Robot_info();
-	Robot_info(unsigned,bool,bool,Alliance);
+	Robot_info(unsigned,bool,bool,bool,Alliance);
 };
 
 #endif

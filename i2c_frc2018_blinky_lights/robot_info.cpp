@@ -9,40 +9,27 @@
 
 using namespace std;
 
-Robot_info::Robot_info(unsigned h,bool c,bool m,Alliance a):lifter_height(h),climbing(c),autonomous(m),alliance(a){}
-Robot_info::Robot_info():Robot_info(0,false,false,INVALID){}
+Robot_info::Robot_info(unsigned h,bool c,bool m,bool e,Alliance a):lifter_height(h),climbing(c),autonomous(m),enabled(e),alliance(a){}
+Robot_info::Robot_info():Robot_info(0,false,false,false,INVALID){}
 
-void Robot_info::update(double duty_cylce){
-	const double PWM_RANGE = 1.0;
-	const double INCREMENT = PWM_RANGE / (double)Robot_info::INFO_STATES;
-	const double STARTING_VALUE = 0.0;
-	
-	int value = ((duty_cylce - STARTING_VALUE) / INCREMENT);
-	
-	switch(value){
-		case 0:
-			climbing = false;
-			break;
-		case 1:
-			climbing = true;
-			break;
-		case 2:
-			autonomous = false;
-			break;
-		case 3:
-			autonomous = true;
-			break;
-		case 4: 
+void Robot_info::update(int c,int a, int e,int al, int h){
+	climbing = (bool)c;
+  autonomous = (bool)a;
+  enabled = (bool)e;
+ 	lifter_height = h;
+   
+ 	switch(al){
+		case 0: 
 			alliance = RED;
 			break;
-		case 5:
+		case 1:
 			alliance = BLUE;
 			break;
-		case 6:
+		case 2:
 			alliance = INVALID;
 			break;
 		default:
-			lifter_height = (value - 7) * 3;
+			;//null
 	}
 }
 
@@ -55,6 +42,8 @@ void Robot_info::print()const{
 	Serial.print(climbing);
 	Serial.print(" autonomous:");
 	Serial.print(autonomous);
+ Serial.print(" enabled:");
+  Serial.print(enabled);
 	Serial.print(" alliance:");
 	switch(alliance){
 		case INVALID:
@@ -85,7 +74,7 @@ void Robot_info::print()const{
 				assert(0);
 		}
 	}();
-	cout<<"lifter_height:"<<lifter_height<<" climbing:"<<climbing<<" autonomous:"<<autonomous<<" alliance:"<<s<<"\n";
+	cout<<"lifter_height:"<<lifter_height<<" climbing:"<<climbing<<" autonomous:"<<autonomous<<" enabled:"<<enabled<<" alliance:"<<s<<"\n";
 	
 	#endif
 }
