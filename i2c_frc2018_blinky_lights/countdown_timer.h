@@ -4,15 +4,16 @@
 //time in milliseconds
 
 class Countdown_timer{
-  public:
-	long left,last_time;
+	private:
+	long left;
+	unsigned long last_time;
 	
 	public:
 	Countdown_timer();
-	void set(long length);
-	void update(long now);
+	void set(const unsigned long);
+	void update();
 	bool done()const;
-  long get_now()const;
+	long get_now()const;
 };
 
 #endif
