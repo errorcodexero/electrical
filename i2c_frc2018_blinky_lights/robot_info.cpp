@@ -42,7 +42,7 @@ void Robot_info::print()const{
 	Serial.print(climbing);
 	Serial.print(" autonomous:");
 	Serial.print(autonomous);
- Serial.print(" enabled:");
+  Serial.print(" enabled:");
   Serial.print(enabled);
 	Serial.print(" alliance:");
 	switch(alliance){
