@@ -58,6 +58,9 @@ void receive_event(int number_received){
 		received[1],
 		received[2],
 		received[3],
-		received[4]
+		received[4],
+    received[5],
+    received[6],
+    received[7]
 	);
 }

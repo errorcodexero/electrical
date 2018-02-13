@@ -1,7 +1,7 @@
 #include "lights.h"
 #include <assert.h>
 
-Lights::Lights():mode_index(LIFTER_HEIGHT),mode(RECENTLY_ENABLED),wait_timer(),cycle_timer(){
+Lights::Lights():mode_index(random(LIFTER_HEIGHT, OFF)),mode(RECENTLY_ENABLED),wait_timer(),cycle_timer(){
 	assert(NUMBER_OF_LEDS > 0);
 	for(int& h: heat){
 		h = 0;
@@ -253,7 +253,11 @@ void Lights::color_rainbow_stripes(){
 	const unsigned HUE_DELTA = 255.0 / LENGTH;
 	
 	CRGB new_led = [&]{
-		const unsigned GAP = ((double)NUMBER_OF_LEDS / NUMBER_OF_STRIPES) - LENGTH;
+		const unsigned GAP = [&]{
+		    int a = ((double)NUMBER_OF_LEDS / NUMBER_OF_STRIPES) - LENGTH;
+        assert(a >= 0);
+        return a;
+		}();
 	
 		unsigned gap = 0;
 		unsigned colored = 0;
@@ -316,10 +320,10 @@ void Lights::color_flame_stripes(){//TODO
 
 	const unsigned LENGTH = 5;
 	const unsigned STRIPES = 3;
-	const unsigned HUES[STRIPES] = {0, 30, 60};
+	const unsigned HUES[STRIPES] = {45, 26, 0};//colors in reverse order - red orange yellow
 	
 	static unsigned hue = 0;
-	CRGB new_led = [&]{//Hue (red orange yellow) 0 30 60
+	CRGB new_led = [&]{
 		CRGB color;
 		color.setHue(HUES[hue]);
 
