@@ -9,10 +9,6 @@ void Countdown_timer::set(const unsigned long length){
 	last_time = millis();
 }
 
-long Countdown_timer::get_now()const{
-	return last_time;
-}
-
 void Countdown_timer::update(){
 	long now = millis();
 	if(left > 0){

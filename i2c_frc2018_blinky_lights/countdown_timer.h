@@ -13,7 +13,6 @@ class Countdown_timer{
 	void set(const unsigned long);
 	void update();
 	bool done()const;
-	long get_now()const;
 };
 
 #endif

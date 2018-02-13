@@ -27,11 +27,13 @@ void setup(){
 }
 
 void loop() {
+	robot_info.alliance = Robot_info::Alliance::RED;
 	{//to test
 		robot_info.lifter_height = h;
 		lifter_timer.update();
 		if(lifter_timer.done()){
-			 lifter_timer.set(500);
+			robot_info.enabled = true; 
+			lifter_timer.set(500);
 			 h++;
 		}
 		if(h > 30){
