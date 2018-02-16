@@ -1,5 +1,7 @@
 #include <Wire.h>
 #include "lights.h"
+#include "fade.h"
+#include "countdown_timer.h"
 
 /*
  * Arduino I2C pins
@@ -16,9 +18,10 @@ Countdown_timer lifter_timer;//to test
 
 unsigned h = 0;//to test
 
+
 void setup(){
 	lights.setup();
-	Wire.begin(8);
+	Wire.begin(ROBORIO_ID);
 	Wire.onReceive(receive_event);
 	Serial.begin(9600);
 	Serial.println("hello world");
@@ -59,8 +62,8 @@ void receive_event(int number_received){
 		received[2],
 		received[3],
 		received[4],
-    received[5],
-    received[6],
-    received[7]
+		received[5],
+		received[6],
+		received[7]
 	);
 }
