@@ -55,6 +55,9 @@ void Lights::print_mode()const{
 		case RAINBOW_STRIPES:
 			Serial.print("RAINBOW_STRIPES");
 			break;
+    case TWO_COLOR_FADE:
+      Serial.print("TWO_COLOR_FADE");
+      break;
 		case FADE:
 			Serial.print("FADE");
 			break;
@@ -365,6 +368,10 @@ void Lights::color_flame_stripes(){//TODO
 	shift_leds(new_led);
 }
 
+void Lights::color_two_color_fade(){//TODO
+  fill_solid(leds,NUMBER_OF_LEDS,CRGB(0,0,0));
+}
+
 void Lights::set_leds(const Robot_info& ROBOT_INFO){
 	const long CYCLE_TIME = 10000;
 	wait_timer.update();
@@ -372,6 +379,8 @@ void Lights::set_leds(const Robot_info& ROBOT_INFO){
 
 	Mode last_mode = mode;
 	mode = [&]{//pick mode to display
+    return TWO_COLOR_FADE;
+    /*
 		if(
 		  (last_mode == RECENTLY_ENABLED && !wait_timer.done()) ||
 		  (ROBOT_INFO.enabled && !last_robot_info.enabled)){
@@ -396,6 +405,7 @@ void Lights::set_leds(const Robot_info& ROBOT_INFO){
 			return (Lights::Mode)mode_index;
 		}
 		return last_mode;
+   */
 	}();
 
 	println_mode();
@@ -443,6 +453,9 @@ void Lights::set_leds(const Robot_info& ROBOT_INFO){
 		case RANDOM_STREAM:
 			color_random_stream();
 			break;
+    case TWO_COLOR_FADE:
+      color_two_color_fade();
+      break;
 		case FADE:
 			color_fade();
 			break;

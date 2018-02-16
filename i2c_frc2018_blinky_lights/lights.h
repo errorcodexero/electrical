@@ -22,14 +22,15 @@ class Lights{
 		RAINBOW_CHASE = 8, //colors lights in rainbow and shifts through colors throughout
 		RAINBOW_STRIPES = 9, //send rainbows out with gabs in between
 		RANDOM_STREAM = 10, //sends a single random color out
-		FADE = 11, //cycles through the rainbow
-		FLAME_STRIPES= 12, //sends out stripes of red, orange, then yellow 
-		OFF = 13 //turn all lights off (note, this must always be the last mode in the list / the mode set to the highest incremental value)
+		TWO_COLOR_FADE = 11, //TODO
+		FADE = 12, //cycles through the rainbow
+		FLAME_STRIPES = 13, //sends out stripes of red, orange, then yellow 
+		OFF = 14 //turn all lights off (note, this must always be the last mode in the list / the mode set to the highest incremental value)
 	};
 	
 	static const unsigned NUMBER_OF_LEDS = 24;
 	static const unsigned LED_STRIP_DATA_PIN = 7;
-	static const byte MAX_BRIGHTNESS = 255;
+	static const byte MAX_BRIGHTNESS = 190;
 	static constexpr double LEDS_PER_INCH = 0.812799561;
 
 	private:
@@ -56,6 +57,7 @@ class Lights{
 	void color_rainbow_chase();
 	void color_rainbow_stripes();
 	void color_random_stream();
+  void color_two_color_fade();
 	void color_fade();
 	void color_flame_stripes();
 	void clear();
