@@ -35,6 +35,8 @@ void Lights::print_mode()const{
 		case CLIMBING:
 			Serial.print("CLIMBING");
 			break;
+    case HAS_CUBE:
+      Serial.print("HAS_CUBE");
 		case LIFTER_HEIGHT:
 			Serial.print("LIFTER_HEIGHT");
 			break;
@@ -77,6 +79,10 @@ void Lights::shift_leds(const CRGB NEW_LED){
 	}
 }
 
+void Lights::color_has_cube(){
+  fill_solid(leds, NUMBER_OF_LEDS, CRGB::Green);
+}
+
 void Lights::color_recently_enabled(const Robot_info::Alliance ALLIANCE){
 	if(millis() % 2 == 0){//set color to black temporarily to flash color
 		clear();
@@ -97,8 +103,13 @@ void Lights::color_recently_enabled(const Robot_info::Alliance ALLIANCE){
 	fill_solid(leds, NUMBER_OF_LEDS, COLOR);
 }
 
-void Lights::color_autonomous(){
-	
+void Lights::color_autonomous(const double LEFT_POWER, const double RIGHT_POWER){//TODO
+	int left_led_height = NUMBER_OF_LEDS *0.5 + (NUMBER_OF_LEDS * 0.5) * LEFT_POWER;//number of leds to light up
+  int right_led_height = NUMBER_OF_LEDS *0.5 + (NUMBER_OF_LEDS * 0.5) * RIGHT_POWER;
+  const CRGB COLOR = CRGB::Blue;
+  clear();
+  
+  fill_solid(leds, left_led_height, CRGB::Red);
 }
 
 void Lights::color_lifter_height(const unsigned LIFTER_HEIGHT){
@@ -110,7 +121,7 @@ void Lights::color_lifter_height(const unsigned LIFTER_HEIGHT){
 	leds[min(led_height, NUMBER_OF_LEDS - 1)] = COLOR;
 }
 
-void Lights::color_climbing(){
+void Lights::color_climbing(){//TODO
 	
 }
 
@@ -361,14 +372,19 @@ void Lights::set_leds(const Robot_info& ROBOT_INFO){
 
 	Mode last_mode = mode;
 	mode = [&]{//pick mode to display
-		if((last_mode == RECENTLY_ENABLED && !wait_timer.done()) || (ROBOT_INFO.enabled && !last_robot_info.enabled)){
+		if(
+		  (last_mode == RECENTLY_ENABLED && !wait_timer.done()) ||
+		  (ROBOT_INFO.enabled && !last_robot_info.enabled)){
 			return RECENTLY_ENABLED;
 		}
+    if(ROBOT_INFO.has_cube){
+      return HAS_CUBE;
+    }
 		if(ROBOT_INFO.climbing){
-			//TODO
+			return CLIMBING;
 		}
 		if(ROBOT_INFO.autonomous){
-			//TODO
+			return AUTONOMOUS;
 		}
 		if(cycle_timer.done() ||
 			(last_mode == RECENTLY_ENABLED && wait_timer.done())
@@ -398,8 +414,11 @@ void Lights::set_leds(const Robot_info& ROBOT_INFO){
 			color_recently_enabled(ROBOT_INFO.alliance);
 			break;
 		case AUTONOMOUS:
-			color_autonomous();
+			color_autonomous(ROBOT_INFO.drive_left,ROBOT_INFO.drive_right);
 			break;
+    case HAS_CUBE:
+      color_has_cube();
+      break;
 		case LIFTER_HEIGHT:
 			color_lifter_height(ROBOT_INFO.lifter_height);
 			break;

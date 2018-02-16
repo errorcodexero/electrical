@@ -14,16 +14,17 @@ class Lights{
 		RECENTLY_ENABLED = 0, //flashes alliance color at beginning of match
 		AUTONOMOUS = 1, //TODO
 		CLIMBING = 2, //TODO
-		LIFTER_HEIGHT = 3, //lights up to the height of the lifter
-		FLAME = 4, //colors a flame slowing from the base
-		RANDOMIZED = 5, //sets rgb values randomly 
-		ALLIANCE_FADE = 6, //fades in and out of red and blue
-		RAINBOW_CHASE = 7, //colors lights in rainbow and shifts through colors throughout
-		RAINBOW_STRIPES = 8, //send rainbows out with gabs in between
-		RANDOM_STREAM = 9, //sends a single random color out
-		FADE = 10, //cycles through the rainbow
-		FLAME_STRIPES= 11, //sends out stripes of red, orange, then yellow 
-		OFF = 12 //turn all lights off (note, this must always be the last mode in the list / the mode set to the highest incremental value)
+    HAS_CUBE = 3, //lights up green when we have a cube
+		LIFTER_HEIGHT = 4, //lights up to the height of the lifter
+		FLAME = 5, //colors a flame slowing from the base
+		RANDOMIZED = 6, //sets rgb values randomly 
+		ALLIANCE_FADE = 7, //fades in and out of red and blue
+		RAINBOW_CHASE = 8, //colors lights in rainbow and shifts through colors throughout
+		RAINBOW_STRIPES = 9, //send rainbows out with gabs in between
+		RANDOM_STREAM = 10, //sends a single random color out
+		FADE = 11, //cycles through the rainbow
+		FLAME_STRIPES= 12, //sends out stripes of red, orange, then yellow 
+		OFF = 13 //turn all lights off (note, this must always be the last mode in the list / the mode set to the highest incremental value)
 	};
 	
 	static const unsigned NUMBER_OF_LEDS = 24;
@@ -45,7 +46,8 @@ class Lights{
 	void shift_leds(const CRGB);
 
 	void color_recently_enabled(const Robot_info::Alliance);
-	void color_autonomous();
+	void color_autonomous(const double,const double);
+  void color_has_cube();
 	void color_lifter_height(const unsigned);
 	void color_climbing();
 	void color_flame();
