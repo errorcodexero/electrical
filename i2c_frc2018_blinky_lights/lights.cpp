@@ -69,7 +69,7 @@ void Lights::set_leds(const Robot_info& ROBOT_INFO){
 		switch(mode){
 			case RECENTLY_ENABLED:
 				if(last_mode != RECENTLY_ENABLED){
-					cycle_timer.set(1000);
+					cycle_timer.set(2000);
 				}
 				light_mode = new Recently_enabled();
 				break;
