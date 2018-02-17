@@ -10,7 +10,6 @@ void Recently_enabled::println()const{
 }
 
 void Recently_enabled::set_leds(const Robot_info& ROBOT_INFO, CRGB leds[]){
-	Serial.println(millis() % 50 > 25);
 	if(millis() % 50 > 25){//set color to black temporarily to flash color
 		clear(leds);
 		return;

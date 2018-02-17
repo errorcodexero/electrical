@@ -32,13 +32,20 @@ void loop() {
 		robot_info.lifter_height = h;
 		if(lifter_timer.done()){
 			robot_info.enabled = true; 
+			//robot_info.autonomous = true;
 			lifter_timer.set(500);
-			 h++;
+			h++;
 		}
 		if(h > 30){
 			h = 0;	
 		}
 	}
+	/*
+	robot_info.drive_left += 0.01;
+	if(robot_info.drive_left < -1 || robot_info.drive_left > 1){
+		robot_info.drive_left = 0;
+	}
+	*/
 	robot_info.println();
 	lights.set_leds(robot_info);
 	delay(0);//TODO
