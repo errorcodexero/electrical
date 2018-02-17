@@ -9,9 +9,10 @@ void Recently_enabled::println()const{
 	Serial.println("Recently_enabled");
 }
 
-void Recently_enabled::set_leds(const Robot_info& ROBOT_INFO){
-	if(millis() % 2 == 0){//set color to black temporarily to flash color
-		clear();
+void Recently_enabled::set_leds(const Robot_info& ROBOT_INFO, CRGB leds[]){
+	Serial.println(millis() % 50 > 25);
+	if(millis() % 50 > 25){//set color to black temporarily to flash color
+		clear(leds);
 		return;
 	}
 	CRGB COLOR = [&]{
@@ -26,7 +27,7 @@ void Recently_enabled::set_leds(const Robot_info& ROBOT_INFO){
 				assert(0);
 		}
 	}();
-	fill_solid(leds, NUMBER_OF_LEDS, COLOR);
+	fill_solid(leds, Light_constants::NUMBER_OF_LEDS, COLOR);
 	
 	FastLED.show();
 }

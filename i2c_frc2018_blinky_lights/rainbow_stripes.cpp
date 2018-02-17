@@ -10,7 +10,7 @@ void Rainbow_stripes::println()const{
 	Serial.println("Rainbow_stripes");
 }
 
-void Rainbow_stripes::set_leds(const Robot_info& ROBOT_INFO){
+void Rainbow_stripes::set_leds(const Robot_info& ROBOT_INFO, CRGB leds[]){
 	if(!wait_timer.done()){
 		return;
 	}
@@ -22,16 +22,16 @@ void Rainbow_stripes::set_leds(const Robot_info& ROBOT_INFO){
 	
 	CRGB new_led = [&]{
 		const unsigned GAP = [&]{
-				int a = ((double)NUMBER_OF_LEDS / NUMBER_OF_STRIPES) - LENGTH;
+				int a = ((double)Light_constants::NUMBER_OF_LEDS / NUMBER_OF_STRIPES) - LENGTH;
 				assert(a >= 0);
 				return a;
 		}();
 	
 		unsigned gap = 0;
 		unsigned colored = 0;
-		for(unsigned i = 0; i < NUMBER_OF_LEDS; i++){
+		for(unsigned i = 0; i < Light_constants::NUMBER_OF_LEDS; i++){
 			if(leds[i] != CRGB(0,0,0)){
-				for(unsigned k = i; k < NUMBER_OF_LEDS; k++){
+				for(unsigned k = i; k < Light_constants::NUMBER_OF_LEDS; k++){
 					if(leds[k] == CRGB(0,0,0)){
 						break;
 					}
@@ -49,7 +49,7 @@ void Rainbow_stripes::set_leds(const Robot_info& ROBOT_INFO){
 		return CRGB(0,0,0);
 	}();
 	
-	shift_leds(new_led, leds, Light_mode_base::NUMBER_OF_LEDS);
+	shift_leds(new_led, leds, Light_constants::NUMBER_OF_LEDS);
 	
 	FastLED.show();
 }

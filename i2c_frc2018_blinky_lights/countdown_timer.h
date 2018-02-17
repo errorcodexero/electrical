@@ -5,13 +5,12 @@
 
 class Countdown_timer{
 	private:
-	long left;
-	unsigned long last_time;
+	unsigned long finish_time;
 	
 	public:
 	Countdown_timer();
+	Countdown_timer(const unsigned long);
 	void set(const unsigned long);
-	void update();
 	bool done()const;
 };
 

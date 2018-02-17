@@ -9,7 +9,7 @@ void Flame_stripes::println()const{
 	Serial.println("Flame_stripes");
 }
 
-void Flame_stripes::set_leds(const Robot_info& ROBOT_INFO){
+void Flame_stripes::set_leds(const Robot_info& ROBOT_INFO, CRGB leds[]){
 	if(!wait_timer.done()){
 		return;
 	}
@@ -30,7 +30,7 @@ void Flame_stripes::set_leds(const Robot_info& ROBOT_INFO){
 		}
 		
 		unsigned colored = 0;
-		for(unsigned i = 0; i < NUMBER_OF_LEDS; i++){
+		for(unsigned i = 0; i < Light_constants::NUMBER_OF_LEDS; i++){
 			if(leds[i] == last){
 				colored++;
 			} else {
@@ -48,7 +48,7 @@ void Flame_stripes::set_leds(const Robot_info& ROBOT_INFO){
 		//something went wrong
 		return CRGB(0,0,0);
 	}();
-	shift_leds(new_led, leds, Light_mode_base::NUMBER_OF_LEDS);
+	shift_leds(new_led, leds, Light_constants::NUMBER_OF_LEDS);
 	
 	FastLED.show();
 }

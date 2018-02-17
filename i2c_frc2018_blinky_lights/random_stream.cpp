@@ -9,12 +9,12 @@ void Random_stream::println()const{
 	Serial.println("Random_stream");
 }
 
-void Random_stream::set_leds(const Robot_info& ROBOT_INFO){
+void Random_stream::set_leds(const Robot_info& ROBOT_INFO, CRGB leds[]){
 	const unsigned GAP = 5;	
 
 	CRGB new_led = [&]{
 		unsigned gap = 0;
-		for(unsigned i = 0; i < NUMBER_OF_LEDS; i++){
+		for(unsigned i = 0; i < Light_constants::NUMBER_OF_LEDS; i++){
 			if(leds[i] != CRGB(0,0,0)){
 				break;
 			}
@@ -27,7 +27,7 @@ void Random_stream::set_leds(const Robot_info& ROBOT_INFO){
 		}
 		return CRGB(0,0,0);
 	}();
-	shift_leds(new_led, leds, Light_mode_base::NUMBER_OF_LEDS);
+	shift_leds(new_led, leds, Light_constants::NUMBER_OF_LEDS);
 	
 	FastLED.show();
 }

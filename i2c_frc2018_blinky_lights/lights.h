@@ -24,11 +24,14 @@ class Lights{
 		OFF = 14 //turn all lights off (note, this must always be the last mode in the list / the mode set to the highest incremental value)
 	};
 	private:
+	Robot_info last_robot_info;
+	CRGB leds[Light_constants::NUMBER_OF_LEDS];
+
 	unsigned mode_index;
 	Mode mode;
-	Countdown_timer cycle_timer;
-	
 	Light_mode_base* light_mode;
+
+	Countdown_timer cycle_timer;
 
 	public:
 	void print_mode()const;

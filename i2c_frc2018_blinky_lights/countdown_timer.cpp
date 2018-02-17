@@ -2,21 +2,13 @@
 
 #include "Arduino.h"
 
-Countdown_timer::Countdown_timer():left(0),last_time(0){}
+Countdown_timer::Countdown_timer(const unsigned long END_TIME):finish_time(END_TIME){}
+Countdown_timer::Countdown_timer():Countdown_timer(0){}
 
 void Countdown_timer::set(const unsigned long length){
-	left = length;
-	last_time = millis();
-}
-
-void Countdown_timer::update(){
-	long now = millis();
-	if(left > 0){
-		left -= (now - last_time);
-	}
-	last_time = now;
+	finish_time = millis() + length;
 }
 
 bool Countdown_timer::done()const{
-	return left <= 0;
+	return millis() >= finish_time;
 }

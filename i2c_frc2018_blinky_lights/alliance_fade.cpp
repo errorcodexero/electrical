@@ -7,7 +7,7 @@ void Alliance_fade::println()const{
 	Serial.println("Alliance_fade");
 }
 
-void Alliance_fade::set_leds(const Robot_info& ROBOT_INFO){
+void Alliance_fade::set_leds(const Robot_info& ROBOT_INFO, CRGB leds[]){
 	const double UPDATE_DELAY = .1;//slows the color changing by this percent
 
 	const unsigned COLORS = 2;
@@ -35,7 +35,7 @@ void Alliance_fade::set_leds(const Robot_info& ROBOT_INFO){
 		}
 		return (unsigned)0;
 	}();
-	fill_solid(leds,NUMBER_OF_LEDS,CRGB(red,0,blue));
+	fill_solid(leds,Light_constants::NUMBER_OF_LEDS,CRGB(red,0,blue));
 	
 	FastLED.show();
 }

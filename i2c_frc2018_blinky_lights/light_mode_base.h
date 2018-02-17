@@ -3,26 +3,12 @@
 
 #include "FastLED.h"
 #include "robot_info.h"
+#include "light_constants.h"
 
-#define LED_CONTROLLER WS2812B
-#define COLOR_ORDER GRB
-
-class Light_mode_base{
-	public:
-	static const unsigned NUMBER_OF_LEDS = 24;
-	static const unsigned LED_STRIP_DATA_PIN = 7;
-	static const byte MAX_BRIGHTNESS = 190;//75%
-	static constexpr double LEDS_PER_INCH = 0.812799561;
-
-	protected:
-	Robot_info last_robot_info;
-	CRGB leds[NUMBER_OF_LEDS];
+struct Light_mode_base{	
+	virtual void set_leds(const Robot_info&,CRGB*) = 0;
 	
-	public:
-	virtual void set_leds(const Robot_info&) = 0;
-	
-	void clear();
-	void setup();
+	void clear(CRGB*);
 	
 	virtual void print()const = 0;
 	virtual void println()const = 0;

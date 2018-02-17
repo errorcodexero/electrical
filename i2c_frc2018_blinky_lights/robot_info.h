@@ -9,9 +9,9 @@ struct Robot_info{
 	bool autonomous;
 	bool enabled;
 	Alliance alliance;
-  double drive_left;
-  double drive_right;
-  bool has_cube;
+	double drive_left;
+	double drive_right;
+	bool has_cube;
 
 	void update(int,int,int,int,int,int,int,int);
 	

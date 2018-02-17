@@ -1,6 +1,5 @@
 #include <Wire.h>
 #include "lights.h"
-#include "fade.h"
 #include "countdown_timer.h"
 
 /*
@@ -14,26 +13,23 @@ Robot_info robot_info;
 Lights lights;
 const byte ROBORIO_ID = 8;
 
-Countdown_timer lifter_timer;//to test
+Countdown_timer lifter_timer = {500};//to test
 
 unsigned h = 0;//to test
 
-
 void setup(){
+	randomSeed(millis());
 	lights.setup();
 	Wire.begin(ROBORIO_ID);
 	Wire.onReceive(receive_event);
 	Serial.begin(9600);
-	Serial.println("hello world");
-	
-	lifter_timer.set(100);//to test
+	Serial.println("Set up complete.");
 }
 
 void loop() {
 	robot_info.alliance = Robot_info::Alliance::RED;
 	{//to test
 		robot_info.lifter_height = h;
-		lifter_timer.update();
 		if(lifter_timer.done()){
 			robot_info.enabled = true; 
 			lifter_timer.set(500);
