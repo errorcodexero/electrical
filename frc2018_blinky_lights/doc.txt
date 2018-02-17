@@ -1,0 +1,10 @@
+This is the blinky light code for the 2018 FRC robot
+
+The robot sends details about its status over I2C to the Arduino which then reads and saves those values. 
+
+Using time and the robot status, the blinky lights are set.
+
+To add a new blinky light mode:
+- Add a new child class of Light_mode_base
+- Define its set_leds and print methods
+- Add a value to the Mode enum in the main Lights class, then add corresponding mode selection logic and assignment of the light mode in the switch based off that enum value
