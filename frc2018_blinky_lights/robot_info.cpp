@@ -10,9 +10,9 @@ void Robot_info::update(int c,int a, int e,int al, int h, int l, int r, int cube
 	autonomous = (bool)a;
 	enabled = (bool)e;
  	lifter_height = h;
-  drive_left = ((double)l / 100.0);
-  drive_right = ((double)r / 100.0);
-  has_cube = (bool)cube;
+	drive_left = ((double)l / 100.0);
+	drive_right = ((double)r / 100.0);
+	has_cube = (bool)cube;
 	 
  	switch(al){
 		case 0: 

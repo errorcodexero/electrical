@@ -6,10 +6,11 @@
 
 struct Flame_stripes: public Light_mode_base{
 	private:
+	unsigned hue;
 	Countdown_timer wait_timer;
 	
 	public:
-	void set_leds(const Robot_info&, CRGB*);
+	void set_leds(const Robot_info&, Lights&);
 	
 	void print()const;
 	void println()const;

@@ -12,7 +12,7 @@ struct Two_color_fade: public Light_mode_base{
 	bool rise;
 
 	public:
-	void set_leds(const Robot_info&, CRGB*);
+	void set_leds(const Robot_info&, Lights&);
 	
 	void print()const;
 	void println()const;

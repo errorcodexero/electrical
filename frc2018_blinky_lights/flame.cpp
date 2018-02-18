@@ -7,7 +7,7 @@ void Flame::println()const{
 	Serial.println("Flame");
 }
 
-void Flame::set_leds(const Robot_info& ROBOT_INFO, CRGB leds[]){
+void Flame::set_leds(const Robot_info& ROBOT_INFO, Lights& lights){
 	/*
 	for(unsigned i = NUMBER_OF_LEDS - 1; i -2 > 0; i--){
 		heat[i] = min(255, max(0, (heat[i - 1] + heat[i - 2] + heat[i - 2] ) / 3.0));
@@ -45,18 +45,19 @@ void Flame::set_leds(const Robot_info& ROBOT_INFO, CRGB leds[]){
 		return;
 	}
 	wait_timer.set(100);
-	CRGB last_leds[Light_constants::NUMBER_OF_LEDS];
-	for(unsigned i = 0; i < Light_constants::NUMBER_OF_LEDS; i++){
-		last_leds[i] = leds[i];
+	for(unsigned led_index = 0; led_index < Lights::Led_index::LEDS_; led_index++){
+		CRGB last_leds[Lights::LED_LENGTHS[led_index]];
+		for(unsigned i = 0; i < Lights::LED_LENGTHS[led_index]; i++){
+			last_leds[i] = lights.get(led_index)[i];
+		}
+		for(unsigned i = 0; i < Lights::LED_LENGTHS[led_index]; i++){
+			unsigned red = random(10, 255);
+			unsigned green = random(0, red / 2);
+			CRGB new_led = (random(0,3) != 0) ? CRGB(red,green,0) : lights.get(led_index)[i];
+			lights.get(led_index)[i] = ((int)i - 1 >= 0) ? last_leds[i - 1] : new_led;
+			lights.get(led_index)[i].fadeToBlackBy(Lights::MAX_BRIGHTNESS / Lights::LED_LENGTHS[led_index]);
+		}
 	}
-	for(unsigned i = 0; i < Light_constants::NUMBER_OF_LEDS; i++){
-		unsigned red = random(10, 255);
-		unsigned green = random(0, red / 2);
-		CRGB new_led = (random(0,3) != 0) ? CRGB(red,green,0) : leds[i];
-		leds[i] = ((int)i - 1 >= 0) ? last_leds[i - 1] : new_led;
-		leds[i].fadeToBlackBy(Light_constants::MAX_BRIGHTNESS / Light_constants::NUMBER_OF_LEDS);
-	}
-	
 	/*
 	double green_segment_size = random(3, 5);
 	for(unsigned i = 0; i < NUMBER_OF_LEDS; i++){

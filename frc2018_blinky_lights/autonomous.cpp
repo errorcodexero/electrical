@@ -1,7 +1,5 @@
 #include "autonomous.h"
 
-Autonomous::Autonomous():dot(HALF){}
-
 void Autonomous::print()const{
 	Serial.print("Autonomous");
 }
@@ -9,31 +7,29 @@ void Autonomous::println()const{
 	Serial.println("Autonomous");
 }
 
-void Autonomous::set_leds(const Robot_info& ROBOT_INFO, CRGB leds[]){
-	int left_led_height = Light_constants::NUMBER_OF_LEDS * 0.5 + (Light_constants::NUMBER_OF_LEDS * 0.5) * ROBOT_INFO.drive_left;//number of leds to light up
-	int right_led_height = Light_constants::NUMBER_OF_LEDS * 0.5 + (Light_constants::NUMBER_OF_LEDS * 0.5) * ROBOT_INFO.drive_right;
+void Autonomous::set_leds(const Robot_info& ROBOT_INFO, Lights& lights){
+	const int HALFWAY_UP_LEFT = Lights::LED_LENGTHS[Lights::Led_index::LEFT_STRIP] * 0.5;
+	const int HALFWAY_UP_RIGHT = Lights::LED_LENGTHS[Lights::Led_index::RIGHT_STRIP] * 0.5;
 
-	if(color_timer.done()){
-		color.setHue(random(0, 255));
-		color_timer.set(1000);
+	int left_led_height = Lights::LED_LENGTHS[Lights::Led_index::LEFT_STRIP]  * 0.5 + (Lights::LED_LENGTHS[Lights::Led_index::LEFT_STRIP] * 0.5) * ROBOT_INFO.drive_left;//number of leds to light up
+	int right_led_height = Lights::LED_LENGTHS[Lights::Led_index::RIGHT_STRIP] * 0.5 + (Lights::LED_LENGTHS[Lights::Led_index::LEFT_STRIP] * 0.5) * ROBOT_INFO.drive_right;
+
+	CRGB color;
+
+	color.setHue(hue);
+	hue += 5;
+	if(hue > 255){
+		hue = 0;
 	}
-	clear(leds);
-
-	for(unsigned i = HALF + min(0, HALF * ROBOT_INFO.drive_left); i < HALF + max(0, HALF * ROBOT_INFO.drive_left); i++){
-		leds[i] = color;
-	}
-
-	leds[dot] = CRGB::White;
 	
-	if(ROBOT_INFO.drive_left <= 0){
-		dot--;
-	} else {
-		dot++;
+	clear(lights);
+
+	for(unsigned i = HALFWAY_UP_LEFT + min(0, HALFWAY_UP_LEFT * ROBOT_INFO.drive_left); i < HALFWAY_UP_LEFT + max(0, HALFWAY_UP_LEFT * ROBOT_INFO.drive_left); i++){
+		lights.get(Lights::Led_index::LEFT_STRIP)[i] = color;
 	}
-	if((ROBOT_INFO.drive_left <= 0 && dot <= left_led_height) ||
-	    (ROBOT_INFO.drive_left > 0 && dot >= left_led_height)
-	){
-		dot = HALF;
+
+	for(unsigned i = HALFWAY_UP_RIGHT + min(0, HALFWAY_UP_RIGHT * ROBOT_INFO.drive_left); i < HALFWAY_UP_RIGHT + max(0, HALFWAY_UP_RIGHT * ROBOT_INFO.drive_left); i++){
+		lights.get(Lights::Led_index::RIGHT_STRIP)[i] = color;
 	}
 
 	FastLED.show();

@@ -4,7 +4,11 @@
 #include "light_mode_base.h"
 
 struct Climbing: public Light_mode_base{
-	void set_leds(const Robot_info&, CRGB*);
+	private:
+	unsigned hue;
+	
+	public:
+	void set_leds(const Robot_info&, Lights&);
 	
 	void print()const;
 	void println()const;

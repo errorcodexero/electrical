@@ -1,5 +1,5 @@
 #include <Wire.h>
-#include "lights.h"
+#include "controller.h"
 #include "countdown_timer.h"
 
 /*
@@ -10,7 +10,7 @@
  */
 
 Robot_info robot_info;
-Lights lights;
+Controller controller;
 const byte ROBORIO_ID = 8;
 
 Countdown_timer lifter_timer = {500};//to test
@@ -19,7 +19,6 @@ unsigned h = 0;//to test
 
 void setup(){
 	randomSeed(millis());
-	lights.setup();
 	Wire.begin(ROBORIO_ID);
 	Wire.onReceive(receive_event);
 	Serial.begin(9600);
@@ -27,6 +26,7 @@ void setup(){
 }
 
 void loop() {
+	//robot_info.climbing = true;
 	robot_info.alliance = Robot_info::Alliance::RED;
 	{//to test
 		robot_info.lifter_height = h;
@@ -40,22 +40,21 @@ void loop() {
 			h = 0;	
 		}
 	}
-	/*
-	robot_info.drive_left += 0.01;
-	if(robot_info.drive_left < -1 || robot_info.drive_left > 1){
-		robot_info.drive_left = 0;
-	}
-	*/
+	
+	//robot_info.drive_left += 0.01;
+	//if(robot_info.drive_left < -1 || robot_info.drive_left > 1){
+	//	robot_info.drive_left = 0;
+	//}
+	
 	robot_info.println();
-	lights.set_leds(robot_info);
-	delay(0);//TODO
+	controller.set_leds(robot_info);
 }
 
 void receive_event(int number_received){
 	int received[number_received];
 	int i = 0;
 	while (0 < Wire.available()){ // loop through all 
-		int x	= Wire.read();
+		int x = Wire.read();
 		received[i] = x;
 		i++;
 	}

@@ -6,18 +6,13 @@
 
 struct Autonomous: public Light_mode_base{
 	private:
-	static const int HALF = Light_constants::NUMBER_OF_LEDS * 0.5;
-	Countdown_timer color_timer;
-	CRGB color;
-	int dot;
+	unsigned hue;
 
 	public:
-	void set_leds(const Robot_info&, CRGB*);
+	void set_leds(const Robot_info&, Lights&);
 	
 	void print()const;
 	void println()const;
-
-	Autonomous();
 };
 
 #endif
