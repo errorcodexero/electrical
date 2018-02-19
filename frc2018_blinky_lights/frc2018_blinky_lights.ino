@@ -1,7 +1,5 @@
 #include <Wire.h>
-#include "controller.h"
-#include "countdown_timer.h"
-
+#include <Gong.h>
 /*
  * Arduino I2C pins
  * 

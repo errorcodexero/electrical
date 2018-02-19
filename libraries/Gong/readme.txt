@@ -1,0 +1,1 @@
+An implementation of FastLED that makes programming robot and OI blinky lights easier

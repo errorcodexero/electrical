@@ -1,0 +1,20 @@
+{
+  "name": "Gong",
+  "keywords": "led,frc,robots,oi",
+  "description": "An implementation of FastLED that makes programming robot and OI blinky lights easier.",
+  "repository":
+  {
+    "type": "git",
+    "url": "https://github.com/errorcodexero/electrical"
+  },
+  "authors":
+  [
+    {
+      "name": "Error Code Xero",
+      "url": "https://github.com/errorcodexero/",
+      "maintainer": true
+    }
+  ],  
+  "frameworks": "arduino",
+  "platforms": ""
+}
