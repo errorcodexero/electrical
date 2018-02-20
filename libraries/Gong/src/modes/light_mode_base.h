@@ -7,10 +7,9 @@
 #include "../control/lights.h"
 
 struct Light_mode_base{	
-	virtual void set_leds(const Robot_info&,Lights&) = 0;
+	virtual void set_leds(const Robot_info&,Lights*,unsigned*) = 0;
 	
-	void clear(Lights&);
-	void clear(CRGB*,const unsigned);
+	void clear(Lights*,unsigned*);
 	
 	virtual void print()const = 0;
 	virtual void println()const = 0;

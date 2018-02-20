@@ -1,5 +1,7 @@
 #include <Wire.h>
 #include <Gong.h>
+
+#include "robot_lights.h"
 /*
  * Arduino I2C pins
  * 
@@ -8,7 +10,7 @@
  */
 
 Robot_info robot_info;
-Controller controller;
+Controller controller = Controller(new Robot_lights());
 const byte ROBORIO_ID = 8;
 
 Countdown_timer lifter_timer = {500};//to test

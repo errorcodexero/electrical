@@ -28,7 +28,7 @@ class Controller{
 
 	private:
 	Robot_info last_robot_info;
-	Lights lights;
+	Lights* lights;
 
 	unsigned mode_index;
 	Mode mode;
@@ -42,7 +42,7 @@ class Controller{
 
 	void set_leds(const Robot_info&);
 
-	Controller();
+	Controller(Lights*);
 };
 
 #endif

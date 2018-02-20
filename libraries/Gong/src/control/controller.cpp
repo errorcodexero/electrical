@@ -18,7 +18,7 @@
 #include "../modes/recently_enabled.h"
 #include "../modes/two_color_fade.h"
 
-Controller::Controller():lights(),mode_index(random(LIFTER_HEIGHT, OFF)),mode(OFF),light_mode(new Off()){}
+Controller::Controller(Lights* l):lights(l),mode_index(random(LIFTER_HEIGHT, OFF)),mode(OFF),light_mode(new Off()){}
 
 void Controller::println_mode()const{
 	light_mode -> println();

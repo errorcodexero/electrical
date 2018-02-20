@@ -2,6 +2,7 @@
 
 #include "assert.h"
 
+/*
 const unsigned Lights::Led_lengths::operator[](const Lights::Led_index LED_INDEX)const{
 	switch(LED_INDEX){
 		case Lights::Led_index::LEFT_STRIP:
@@ -23,7 +24,7 @@ const unsigned Lights::Led_lengths::operator[](const unsigned LED_INDEX)const{
 			assert(0);
 	}
 }
-
+*/
 Lights::Lights(){
 	for(unsigned i = 0; i < Lights::Led_index::LEDS_; i++){
 		if(Lights::LED_LENGTHS[i] <= 0){
@@ -49,7 +50,7 @@ Lights::Lights(){
 	
 	FastLED.setBrightness(Lights::MAX_BRIGHTNESS);
 }
-
+/*
 CRGB* Lights::get(const Lights::Led_index LED_INDEX){
 	switch(LED_INDEX){
 		case Lights::Led_index::LEFT_STRIP:
@@ -65,4 +66,4 @@ CRGB* Lights::get(const unsigned LED_INDEX){
 	assert(LED_INDEX < Lights::Led_index::LEDS_);
 	return get((Lights::Led_index)LED_INDEX);
 }
-
+*/

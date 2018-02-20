@@ -7,6 +7,7 @@
 #define COLOR_ORDER GRB
 
 struct Lights{
+	/*
 	static const byte MAX_BRIGHTNESS = 190;//75%
 	static constexpr double LEDS_PER_INCH = 0.812799561;
 
@@ -32,16 +33,16 @@ struct Lights{
 		7,  //LEFT_STRIP
 		8   //RIGHT_STRIP
 	};
-
-	private:
-	CRGB *left_strip;
-	CRGB *right_strip;
+	*/
 	
-	public:
-	CRGB* get(const Led_index);
-	CRGB* get(const unsigned);
+	virtual double leds_per_inch()const = 0;
+	virtual unsigned max_brightness()const = 0;
 	
-	Lights();
+	virtual CRGB* get(const unsigned) = 0;
+	virtual unsigned data_pin(const unsigned) = 0;
+	virtual unsigned length(const unsigned) = 0;
+	
+	virtual ~Lights(){}
 };
 
 #endif
