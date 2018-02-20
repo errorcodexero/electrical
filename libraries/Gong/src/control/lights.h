@@ -1,7 +1,7 @@
 #ifndef LIGHTS_H
 #define LIGHTS_H
 
-#include "../../FastLED/FastLED.h"
+#include "FastLED.h"
 
 #define LED_CONTROLLER WS2812B
 #define COLOR_ORDER GRB

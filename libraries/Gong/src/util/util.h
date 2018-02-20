@@ -1,7 +1,8 @@
 #ifndef UTIL_H
 #define UTIL_H
 
-#include "../../FastLED/FastLED.h"
+#include "FastLED.h"
+
 #include "robot_info.h"
 
 void shift_leds(const CRGB, CRGB*, const unsigned LEN);

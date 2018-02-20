@@ -1,7 +1,8 @@
 #ifndef LIGHT_MODE_BASE_H
 #define LIGHT_MODE_BASE_H
 
-#include "../../FastLED/FastLED.h"
+#include "FastLED.h"
+
 #include "../util/robot_info.h"
 #include "../control/lights.h"
 

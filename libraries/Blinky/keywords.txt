@@ -6,7 +6,7 @@
 # Datatypes (KEYWORD1)
 #######################################
 
-Gong	KEYWORD1 #Not a datatype - used to confirm that libraries are setup correctly
+Blinky	KEYWORD1 #Not a datatype - used to confirm that libraries are setup correctly
 
 #######################################
 # Methods and Functions (KEYWORD2)
