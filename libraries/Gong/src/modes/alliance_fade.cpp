@@ -1,5 +1,7 @@
 #include "alliance_fade.h"
 
+Alliance_fade::Alliance_fade(unsigned s[]):strips(s){}
+
 void Alliance_fade::print()const{
 	Serial.print("Alliance_fade");
 }
@@ -7,7 +9,7 @@ void Alliance_fade::println()const{
 	Serial.println("Alliance_fade");
 }
 
-void Alliance_fade::set_leds(const Robot_info& ROBOT_INFO, Lights& lights){
+void Alliance_fade::set_leds(CRGB* leds,const unsigned LENGTH,const Robot_info& ROBOT_INFO){
 	const double UPDATE_DELAY = .1;//slows the color changing by this percent
 
 	const unsigned COLORS = 2;

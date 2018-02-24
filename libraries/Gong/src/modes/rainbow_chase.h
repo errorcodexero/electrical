@@ -4,10 +4,12 @@
 #include "light_mode_base.h"
 
 struct Rainbow_chase: public Light_mode_base{
-	void set_leds(const Robot_info&, Lights&);
+	void set_leds(CRGB*,const unsigned,const Robot_info&);
 	
 	void print()const;
 	void println()const;
+	
+	Rainbow_chase(unsigned*);
 };
 
 #endif

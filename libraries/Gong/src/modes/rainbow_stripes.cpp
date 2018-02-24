@@ -3,6 +3,8 @@
 #include "../util/util.h"
 #include "assert.h"
 
+Rainbow_stripes::Rainbow_stripes(unsigned s[]):strips(s){}
+
 void Rainbow_stripes::print()const{
 	Serial.print("Rainbow_stripes");
 }
@@ -10,7 +12,7 @@ void Rainbow_stripes::println()const{
 	Serial.println("Rainbow_stripes");
 }
 
-void Rainbow_stripes::set_leds(const Robot_info& ROBOT_INFO, Lights& lights){
+void Rainbow_stripes::set_leds(CRGB* leds,const unsigned LENGTH,const Robot_info& ROBOT_INFO){
 	if(!wait_timer.done()){
 		return;
 	}

@@ -121,7 +121,5 @@ void Controller::set_leds(const Robot_info& ROBOT_INFO){
 
 	light_mode -> set_leds(ROBOT_INFO, lights);
 	
-	last_robot_info = ROBOT_INFO;
-	
+	last_robot_info = ROBOT_INFO;	
 }
-

@@ -1,5 +1,7 @@
 #include "autonomous.h"
 
+Autonomous::Autonomous(unsigned s[]):strips(s){}
+
 void Autonomous::print()const{
 	Serial.print("Autonomous");
 }
@@ -7,7 +9,7 @@ void Autonomous::println()const{
 	Serial.println("Autonomous");
 }
 
-void Autonomous::set_leds(const Robot_info& ROBOT_INFO, Lights& lights){
+void Autonomous::set_leds(CRGB* leds,const unsigned LENGTH,const Robot_info& ROBOT_INFO){
 	const int HALFWAY_UP_LEFT = Lights::LED_LENGTHS[Lights::Led_index::LEFT_STRIP] * 0.5;
 	const int HALFWAY_UP_RIGHT = Lights::LED_LENGTHS[Lights::Led_index::RIGHT_STRIP] * 0.5;
 

@@ -19,7 +19,7 @@ class Controller{
 		ALLIANCE_FADE = 7, //fades in and out of red and blue
 		RAINBOW_CHASE = 8, //colors lights in rainbow and shifts through colors throughout
 		RAINBOW_STRIPES = 9, //send rainbows out with gabs in between
-		RANDOM_STREAM = 10, //sends a single random color out ata time
+		RANDOM_STREAM = 10, //sends a single random color out at a time
 		TWO_COLOR_FADE = 11, //fades in between red and blue
 		FADE = 12, //cycles through the rainbow
 		FLAME_STRIPES = 13, //sends out stripes of red, orange, then yellow 

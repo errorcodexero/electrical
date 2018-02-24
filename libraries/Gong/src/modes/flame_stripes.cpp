@@ -2,6 +2,8 @@
 
 #include "../util/util.h"
 
+Flame_stripes::Flame_stripes(unsigned s[]):strips(s){}
+
 void Flame_stripes::print()const{
 	Serial.print("Flame_stripes");
 }
@@ -9,7 +11,7 @@ void Flame_stripes::println()const{
 	Serial.println("Flame_stripes");
 }
 
-void Flame_stripes::set_leds(const Robot_info& ROBOT_INFO, Lights& lights){
+void Flame_stripes::set_leds(CRGB* leds,const unsigned LENGTH,const Robot_info& ROBOT_INFO){
 	if(!wait_timer.done()){
 		return;
 	}

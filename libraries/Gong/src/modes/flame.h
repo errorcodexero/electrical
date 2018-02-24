@@ -7,13 +7,15 @@
 struct Flame: public Light_mode_base{
 	private:
 	Countdown_timer wait_timer;
-	int heat[Lights::Led_index::LEFT_STRIP];
+	int *heat;
 	
 	public:
-	void set_leds(const Robot_info&, Lights&);
+	void set_leds(CRGB*,const unsigned,const Robot_info&);
 	
 	void print()const;
 	void println()const;
+	
+	Flame(unsigned*);
 };
 
 #endif

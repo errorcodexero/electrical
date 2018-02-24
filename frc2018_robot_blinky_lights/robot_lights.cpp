@@ -1,8 +1,10 @@
 #include "robot_lights.h"
 
+#include "assert.h"
+
 Robot_lights::Robot_lights(){
 	for(unsigned i = 0; i < Robot_lights::Led_index::LEDS_; i++){
-		if(){
+		if(Robot_lights::length(i) <= 0){
 			Serial.println("Error: LED array length is of size zero or less");
 			assert(0);
 		}
@@ -10,17 +12,17 @@ Robot_lights::Robot_lights(){
 	
 	FastLED.addLeds<
 		LED_CONTROLLER,
-		Lights::LED_DATA_PINS[Lights::Led_index::LEFT_STRIP],
+		Robot_lights::LEFT_STRIP_DATA_PIN,
 		COLOR_ORDER
-	>(left_strip, Lights::LED_LENGTHS[Lights::Led_index::LEFT_STRIP]);
+	>(left_strip, Robot_lights::LEFT_STRIP_LENGTH);
 
 	FastLED.addLeds<
 		LED_CONTROLLER,
-		Lights::LED_DATA_PINS[Lights::Led_index::RIGHT_STRIP],
+		Robot_lights::RIGHT_STRIP_DATA_PIN,
 		COLOR_ORDER
-	>(right_strip, Lights::LED_LENGTHS[Lights::Led_index::RIGHT_STRIP]);
+	>(right_strip, Robot_lights::RIGHT_STRIP_LENGTH);
 	
-	FastLED.setBrightness(Lights::MAX_BRIGHTNESS);
+	FastLED.setBrightness(Robot_lights::MAX_BRIGHTNESS);
 }
 
 double Robot_lights::leds_per_inch()const{
@@ -47,17 +49,19 @@ unsigned Robot_lights::data_pin(const unsigned STRIP){
 		case Led_index::LEFT_STRIP:
 			return LEFT_STRIP_DATA_PIN;
 		case Led_index::RIGHT_STRIP:
-			return RIGHT_STRIP_DATA_PIN:
+			return RIGHT_STRIP_DATA_PIN;
 		default:
 			assert(0);
 	}
 }
 
-unsigned Robot_lights::length(const unsigned){
+unsigned Robot_lights::length(const unsigned STRIP){
 	switch(STRIP){
 		case Led_index::LEFT_STRIP:
-			return LEFT_STRIP_LENGTH
+			return LEFT_STRIP_LENGTH;
 		case Led_index::RIGHT_STRIP:
-			return RIGHT_STRIP_LENGTH
+			return RIGHT_STRIP_LENGTH;
+    	default:
+    		assert(0);
 	}
 }

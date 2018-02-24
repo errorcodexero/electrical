@@ -1,5 +1,7 @@
 #include "randomized.h"
 
+Randomized::Randomized(unsigned s[]):strips(s){}
+
 void Randomized::print()const{
 	Serial.print("Randomized");
 }
@@ -7,7 +9,7 @@ void Randomized::println()const{
 	Serial.println("Randomized");
 }
 
-void Randomized::set_leds(const Robot_info& ROBOT_INFO, Lights& lights){//TODO
+void Randomized::set_leds(CRGB* leds,const unsigned LENGTH,const Robot_info& ROBOT_INFO){//TODO
 	if(!wait_timer.done()){
 		return;
 	}

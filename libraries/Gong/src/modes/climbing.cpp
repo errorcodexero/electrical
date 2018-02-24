@@ -3,6 +3,8 @@
 #include "../util/util.h"
 #include "assert.h"
 
+Climbing::Climbing(unsigned s[]):strips(s){}
+
 void Climbing::print()const{
 	Serial.print("Climbing");
 }
@@ -10,7 +12,7 @@ void Climbing::println()const{
 	Serial.println("Climbing");
 }
 
-void Climbing::set_leds(const Robot_info& ROBOT_INFO, Lights& lights){	
+void Climbing::set_leds(CRGB* leds,const unsigned LENGTH,const Robot_info& ROBOT_INFO){
 	const unsigned LENGTH = 3;
 	const unsigned GAP = 5;
 	const unsigned HUE_DELTA = 30;

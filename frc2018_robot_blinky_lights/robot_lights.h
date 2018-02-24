@@ -18,10 +18,10 @@ struct Robot_lights: public Lights{
 	static const unsigned RIGHT_STRIP_LENGTH = 24;
 	
 	static const unsigned LEFT_STRIP_DATA_PIN = 7;
-	static const unsigned LEFT_STRIP_DATA_PIN = 8;
+	static const unsigned RIGHT_STRIP_DATA_PIN = 8;
 	
 	CRGB left_strip[LEFT_STRIP_LENGTH];
-	CRGB right_strip[RIGHT];
+	CRGB right_strip[RIGHT_STRIP_LENGTH];
 	
 	public:
 

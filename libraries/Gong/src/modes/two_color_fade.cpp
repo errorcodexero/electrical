@@ -1,6 +1,6 @@
 #include "two_color_fade.h"
 
-Two_color_fade::Two_color_fade():blue(0),rise(true){}
+Two_color_fade::Two_color_fade(unsigned s[]):strips(s),blue(0),rise(true){}
 
 void Two_color_fade::print()const{
 	Serial.print("Two_color_fade");
@@ -9,7 +9,7 @@ void Two_color_fade::println()const{
 	Serial.println("Two_color_fade");
 }
 
-void Two_color_fade::set_leds(const Robot_info& ROBOT_INFO, Lights& lights){//TODO
+void Two_color_fade::set_leds(CRGB* leds,const unsigned LENGTH,const Robot_info& ROBOT_INFO){//TODO
 	if(!blue_timer.done()){
 		return;
 	}

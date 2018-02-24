@@ -1,5 +1,7 @@
 #include "flame.h"
 
+Flame::Flame(unsigned s[]):strips(s){}
+
 void Flame::print()const{
 	Serial.print("Flame");
 }
@@ -7,7 +9,7 @@ void Flame::println()const{
 	Serial.println("Flame");
 }
 
-void Flame::set_leds(const Robot_info& ROBOT_INFO, Lights& lights){
+void Flame::set_leds(CRGB* leds,const unsigned LENGTH,const Robot_info& ROBOT_INFO){
 	/*
 	for(unsigned i = NUMBER_OF_LEDS - 1; i -2 > 0; i--){
 		heat[i] = min(255, max(0, (heat[i - 1] + heat[i - 2] + heat[i - 2] ) / 3.0));

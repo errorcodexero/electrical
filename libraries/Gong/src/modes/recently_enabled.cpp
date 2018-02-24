@@ -3,6 +3,8 @@
 #include "assert.h"
 #include "../util/util.h"
 
+Recently_enabled::Recently_enabled(unsigned s[]):strips(s){}
+
 void Recently_enabled::print()const{
 	Serial.print("Recently_enabled");
 }
@@ -10,7 +12,7 @@ void Recently_enabled::println()const{
 	Serial.println("Recently_enabled");
 }
 
-void Recently_enabled::set_leds(const Robot_info& ROBOT_INFO, Lights& lights){
+void Recently_enabled::set_leds(CRGB* leds,const unsigned LENGTH,const Robot_info& ROBOT_INFO){
 	if(millis() % 50 > 25){//set color to black temporarily to flash color
 		clear(lights);
 		Serial.println("clear");

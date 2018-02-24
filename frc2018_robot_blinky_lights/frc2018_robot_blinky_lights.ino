@@ -10,10 +10,32 @@
  */
 
 Robot_info robot_info;
-Controller controller = Controller(new Robot_lights());
+Controller controller = Controller(new Robot_lights());/*
+	{
+		new Recently_enabled({
+				Robot_lights::Led_index::LEFT_STRIP,
+				Robot_lights::Led_index::RIGHT_STRIP
+			}),
+						new Autonomous(),
+		new Has_cube(),
+		new Lifter_height(),
+		new Climbing(),
+		new Flame(),
+		new Randomized(),
+		new Alliance_fade(),
+		new Rainbow_chase(),
+		new Rainbow_stripes(),
+		new Random_stream(),
+		new Two_color_fade(),
+		new Fade(),
+		new Flame_stripes(),
+		new Off()
+	}
+);
+*/
 const byte ROBORIO_ID = 8;
 
-Countdown_timer lifter_timer = {500};//to test
+Countdown_timer lifter_timer = Countdown_timer(500);//to test
 
 unsigned h = 0;//to test
 

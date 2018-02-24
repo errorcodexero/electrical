@@ -2,6 +2,8 @@
 
 #include "../util/util.h"
 
+Lifter_height::Lifter_height(unsigned s[]):strips(s){}
+
 void Lifter_height::print()const{
 	Serial.print("Lifter_height");
 }
@@ -9,7 +11,7 @@ void Lifter_height::println()const{
 	Serial.println("Lifter_height");
 }
 
-void Lifter_height::set_leds(const Robot_info& ROBOT_INFO, Lights& lights){
+void Lifter_height::set_leds(CRGB* leds,const unsigned LENGTH,const Robot_info& ROBOT_INFO){
 	int led_height = ROBOT_INFO.lifter_height * Lights::LEDS_PER_INCH;//number of leds to light up
 	const CRGB COLOR = alliance_to_color(ROBOT_INFO.alliance);
 

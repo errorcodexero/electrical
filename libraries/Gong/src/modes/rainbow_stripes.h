@@ -9,10 +9,12 @@ struct Rainbow_stripes: public Light_mode_base{
 	Countdown_timer wait_timer;
 	
 	public:
-	void set_leds(const Robot_info&, Lights&);
+	void set_leds(CRGB*,const unsigned,const Robot_info&);
 	
 	void print()const;
 	void println()const;
+	
+	Rainbow_stripes(unsigned*);
 };
 
 #endif

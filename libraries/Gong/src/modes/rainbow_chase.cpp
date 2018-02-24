@@ -1,5 +1,7 @@
 #include "rainbow_chase.h"
 
+Rainbow_chase::Rainbow_chase(unsigned s[]):strips(s){}
+
 void Rainbow_chase::print()const{
 	Serial.print("Rainbow_chase");
 }
@@ -7,7 +9,7 @@ void Rainbow_chase::println()const{
 	Serial.println("Rainbow_chase");
 }
 
-void Rainbow_chase::set_leds(const Robot_info& ROBOT_INFO, Lights& lights){
+void Rainbow_chase::set_leds(CRGB* leds,const unsigned LENGTH,const Robot_info& ROBOT_INFO){
 	const double UPDATE_DELAY = .1;//slows the color chaning by this percent
 
 	unsigned hue = [&]{
