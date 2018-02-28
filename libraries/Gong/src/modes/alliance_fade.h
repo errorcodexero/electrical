@@ -8,8 +8,6 @@ struct Alliance_fade: public Light_mode_base{
 	
 	void print()const;
 	void println()const;
-	
-	Alliance_fade(unsigned*);
 };
 
 #endif

@@ -2,6 +2,7 @@
 #define CONTROL_H
 
 #include "control/controller.h"
-#include "control/lights.h"
+#include "control/light_strip.h"
+#include "control/light_strip_constants.h"
 
 #endif

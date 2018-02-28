@@ -1,7 +1,7 @@
 #include "controller.h"
 
 #include <assert.h>
-
+/*
 #include "../modes/alliance_fade.h"
 #include "../modes/autonomous.h"
 #include "../modes/climbing.h"
@@ -123,3 +123,4 @@ void Controller::set_leds(const Robot_info& ROBOT_INFO){
 	
 	last_robot_info = ROBOT_INFO;	
 }
+*/

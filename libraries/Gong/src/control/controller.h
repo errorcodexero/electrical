@@ -5,7 +5,7 @@
 #include "../modes/light_mode_base.h"
 #include "../util/robot_info.h"
 #include "../util/countdown_timer.h"
-
+/*
 class Controller{
 	public:
 	enum Mode{
@@ -44,5 +44,5 @@ class Controller{
 
 	Controller(Lights*);
 };
-
+*/
 #endif

@@ -14,8 +14,6 @@ struct Flame: public Light_mode_base{
 	
 	void print()const;
 	void println()const;
-	
-	Flame(unsigned*);
 };
 
 #endif

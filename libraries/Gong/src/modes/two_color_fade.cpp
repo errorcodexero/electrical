@@ -1,7 +1,5 @@
 #include "two_color_fade.h"
 
-Two_color_fade::Two_color_fade(unsigned s[]):strips(s),blue(0),rise(true){}
-
 void Two_color_fade::print()const{
 	Serial.print("Two_color_fade");
 }
@@ -34,9 +32,7 @@ void Two_color_fade::set_leds(CRGB* leds,const unsigned LENGTH,const Robot_info&
 	}
 	unsigned red = 255 - blue;
 	
-	for(unsigned led_index = 0; led_index < Lights::Led_index::LEDS_; led_index++){
-		fill_solid(lights.get(led_index),Lights::LED_LENGTHS[led_index],CRGB(red,0,blue));
-	}
+	fill_solid(leds,LENGTH,CRGB(red,0,blue));
 	
 	FastLED.show();
 }

@@ -3,8 +3,6 @@
 #include "../util/util.h"
 #include "assert.h"
 
-Rainbow_stripes::Rainbow_stripes(unsigned s[]):strips(s){}
-
 void Rainbow_stripes::print()const{
 	Serial.print("Rainbow_stripes");
 }
@@ -18,35 +16,33 @@ void Rainbow_stripes::set_leds(CRGB* leds,const unsigned LENGTH,const Robot_info
 	}
 	wait_timer.set(50);
 	
-	const unsigned LENGTH = 7;
+	const unsigned STRIPE_LENGTH = 7;
 	const unsigned GAP = 5;
 	const unsigned HUE_DELTA = 30;
 	
-	for(unsigned led_index = 0; led_index < Lights::Led_index::LEDS_; led_index++){
-		CRGB new_led = [&]{
-			unsigned gap = 0;
-			unsigned colored = 0;
-			for(unsigned i = 0; i < Lights::LED_LENGTHS[led_index]; i++){
-				if(lights.get(led_index)[i] != CRGB(0,0,0)){
-					for(unsigned k = i; k < Lights::LED_LENGTHS[led_index]; k++){
-						if(lights.get(led_index)[k] == CRGB(0,0,0)){
-							break;
-						}
-						colored++;
+	CRGB new_led = [&]{
+		unsigned gap = 0;
+		unsigned colored = 0;
+		for(unsigned i = 0; i < LENGTH; i++){
+			if(leds[i] != CRGB(0,0,0)){
+				for(unsigned k = i; k < LENGTH; k++){
+					if(leds[k] == CRGB(0,0,0)){
+						break;
 					}
-					break;
+					colored++;
 				}
-				gap++;
+				break;
 			}
-			if(gap >= GAP || colored < LENGTH){
-				CRGB color;
-				color.setHue(colored * HUE_DELTA);
-				return color;
-			} 
-			return CRGB(0,0,0);
-		}();
-		
-		shift_leds(new_led, lights.get(led_index), Lights::LED_LENGTHS[led_index]);
-	}
+			gap++;
+		}
+		if(gap >= GAP || colored < STRIPE_LENGTH){
+			CRGB color;
+			color.setHue(colored * HUE_DELTA);
+			return color;
+		} 
+		return CRGB(0,0,0);
+	}();
+	
+	shift_leds(new_led, leds, LENGTH);
 	FastLED.show();
 }

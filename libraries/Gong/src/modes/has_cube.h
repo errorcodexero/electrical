@@ -8,8 +8,6 @@ struct Has_cube: public Light_mode_base{
 	
 	void print()const;
 	void println()const;
-	
-	Has_cube(unsigned*);
 };
 
 #endif

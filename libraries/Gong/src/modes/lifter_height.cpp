@@ -2,8 +2,6 @@
 
 #include "../util/util.h"
 
-Lifter_height::Lifter_height(unsigned s[]):strips(s){}
-
 void Lifter_height::print()const{
 	Serial.print("Lifter_height");
 }
@@ -12,23 +10,21 @@ void Lifter_height::println()const{
 }
 
 void Lifter_height::set_leds(CRGB* leds,const unsigned LENGTH,const Robot_info& ROBOT_INFO){
-	int led_height = ROBOT_INFO.lifter_height * Lights::LEDS_PER_INCH;//number of leds to light up
+	int led_height = ROBOT_INFO.lifter_height * Light_strip_constants::LEDS_PER_INCH;//number of leds to light up
 	const CRGB COLOR = alliance_to_color(ROBOT_INFO.alliance);
 
-	//fill_solid(leds, Lights::NUMBER_OF_LEDS, ABOVE_HEIGHT_COLOR);
-	//fill_solid(leds, min(led_height, Lights::NUMBER_OF_LEDS), BELOW_HEIGHT_COLOR);
-	const unsigned LENGTH = 5;
+	//fill_solid(leds, LENGTH, ABOVE_HEIGHT_COLOR);
+	//fill_solid(leds, min(led_height, LENGTH), BELOW_HEIGHT_COLOR);
+	const unsigned STRIPE_LENGTH = 5;
 
-	clear(lights);
+	clear(leds,LENGTH);
 
-	for(unsigned led_index = 0; led_index < Lights::Led_index::LEDS_; led_index++){
-		
-		unsigned start = min(led_height, Lights::LED_LENGTHS[led_index] - 1);
-
-		for(unsigned i = start; i < min(start + LENGTH, Lights::LED_LENGTHS[led_index]); i++){
-			lights.get(led_index)[i] = COLOR;
-		}
+	unsigned start = min(led_height, LENGTH - 1);
+	
+	for(unsigned i = start; i < min(start + STRIPE_LENGTH, LENGTH); i++){
+		leds[i] = COLOR;
 	}
+
 	
 	FastLED.show();
 }

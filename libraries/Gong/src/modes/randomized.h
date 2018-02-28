@@ -13,8 +13,6 @@ struct Randomized: public Light_mode_base{
 	
 	void print()const;
 	void println()const;
-	
-	Randomized(unsigned*);
 };
 
 #endif

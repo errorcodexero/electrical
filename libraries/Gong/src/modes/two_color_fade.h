@@ -16,8 +16,6 @@ struct Two_color_fade: public Light_mode_base{
 	
 	void print()const;
 	void println()const;
-
-	Two_color_fade();
 };
 
 #endif

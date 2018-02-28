@@ -8,8 +8,6 @@ struct Random_stream: public Light_mode_base{
 	
 	void print()const;
 	void println()const;
-	
-	Random_stream(unsigned*);
 };
 
 #endif

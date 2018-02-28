@@ -25,6 +25,7 @@ const unsigned Lights::Led_lengths::operator[](const unsigned LED_INDEX)const{
 	}
 }
 */
+/*
 Lights::Lights(){
 	for(unsigned i = 0; i < Lights::Led_index::LEDS_; i++){
 		if(Lights::LED_LENGTHS[i] <= 0){
@@ -49,7 +50,7 @@ Lights::Lights(){
 	>(right_strip, Lights::LED_LENGTHS[Lights::Led_index::RIGHT_STRIP]);
 	
 	FastLED.setBrightness(Lights::MAX_BRIGHTNESS);
-}
+}*/
 /*
 CRGB* Lights::get(const Lights::Led_index LED_INDEX){
 	switch(LED_INDEX){

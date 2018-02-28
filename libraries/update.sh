@@ -60,5 +60,4 @@ do
 	cp -r $CUSTOM_LIBRARY_SOURCE_PATH/$library $SKETCHBOOK_PATH/$library
 done
 
-printf "\nUpdate successful\n"
-
+printf "\nUpdate successful - %s:%s:%s" $(date +%l) $(date +%M) $(date +%S)

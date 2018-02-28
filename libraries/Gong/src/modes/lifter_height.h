@@ -8,8 +8,6 @@ struct Lifter_height: public Light_mode_base{
 	
 	void print()const;
 	void println()const;
-	
-	Lifter_height(unsigned*);
 };
 
 #endif

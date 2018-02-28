@@ -1,7 +1,5 @@
 #include "rainbow_chase.h"
 
-Rainbow_chase::Rainbow_chase(unsigned s[]):strips(s){}
-
 void Rainbow_chase::print()const{
 	Serial.print("Rainbow_chase");
 }
@@ -20,9 +18,8 @@ void Rainbow_chase::set_leds(CRGB* leds,const unsigned LENGTH,const Robot_info& 
 		return 512 - remainder ;
 	}();
 	const unsigned HUE_DELTA = 5;
-	for(unsigned led_index = 0; led_index < Lights::Led_index::LEDS_; led_index++){
-		fill_rainbow(lights.get(led_index),Lights::LED_LENGTHS[led_index],hue,HUE_DELTA);
-	}
+	
+	fill_rainbow(leds,LENGTH,hue,HUE_DELTA);
 	
 	FastLED.show();
 }

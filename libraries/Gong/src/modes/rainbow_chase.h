@@ -8,8 +8,6 @@ struct Rainbow_chase: public Light_mode_base{
 	
 	void print()const;
 	void println()const;
-	
-	Rainbow_chase(unsigned*);
 };
 
 #endif

@@ -12,8 +12,6 @@ struct Climbing: public Light_mode_base{
 	
 	void print()const;
 	void println()const;
-	
-	Climbing(unsigned*);
 };
 
 #endif

@@ -3,6 +3,7 @@
 
 #include "FastLED.h"
 
+/*
 #define LED_CONTROLLER WS2812B
 #define COLOR_ORDER GRB
 
@@ -34,7 +35,7 @@ struct Lights{
 		8   //RIGHT_STRIP
 	};
 	*/
-	
+/*	
 	virtual double leds_per_inch()const = 0;
 	virtual unsigned max_brightness()const = 0;
 	
@@ -44,5 +45,5 @@ struct Lights{
 	
 	virtual ~Lights(){}
 };
-
+*/
 #endif

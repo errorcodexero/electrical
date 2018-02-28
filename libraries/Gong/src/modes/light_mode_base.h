@@ -4,13 +4,10 @@
 #include "FastLED.h"
 
 #include "../util/robot_info.h"
+#include "../control/light_strip_constants.h"
 #include "../control/lights.h"
 
 struct Light_mode_base{	
-	private:
-	unsigned* strips;
-	
-	public:
 	virtual void set_leds(CRGB*,const unsigned,const Robot_info&) = 0;
 	
 	void clear(CRGB*,const unsigned);

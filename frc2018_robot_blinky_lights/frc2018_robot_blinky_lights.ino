@@ -10,7 +10,7 @@
  */
 
 Robot_info robot_info;
-Controller controller = Controller(new Robot_lights());/*
+Robot_lights robot_lights = Robot_lights();/*
 	{
 		new Recently_enabled({
 				Robot_lights::Led_index::LEFT_STRIP,
@@ -69,7 +69,7 @@ void loop() {
 	//}
 	
 	robot_info.println();
-	controller.set_leds(robot_info);
+	robot_lights.set_leds(robot_info);
 }
 
 void receive_event(int number_received){

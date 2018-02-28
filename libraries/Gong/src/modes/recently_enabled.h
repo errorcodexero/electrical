@@ -8,8 +8,6 @@ struct Recently_enabled: public Light_mode_base{
 	
 	void print()const;
 	void println()const;
-	
-	Recently_enabled(unsigned*);
 };
 
 #endif

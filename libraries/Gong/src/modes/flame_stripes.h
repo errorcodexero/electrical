@@ -14,8 +14,6 @@ struct Flame_stripes: public Light_mode_base{
 	
 	void print()const;
 	void println()const;
-	
-	Flame_stripes(unsigned*);
 };
 
 #endif

@@ -1,7 +1,5 @@
 #include "alliance_fade.h"
 
-Alliance_fade::Alliance_fade(unsigned s[]):strips(s){}
-
 void Alliance_fade::print()const{
 	Serial.print("Alliance_fade");
 }
@@ -38,8 +36,7 @@ void Alliance_fade::set_leds(CRGB* leds,const unsigned LENGTH,const Robot_info& 
 		return (unsigned)0;
 	}();
 	
-	fill_solid(lights.get(Lights::Led_index::LEFT_STRIP),Lights::LED_LENGTHS[Lights::Led_index::LEFT_STRIP],CRGB(red,0,blue));
-	fill_solid(lights.get(Lights::Led_index::RIGHT_STRIP),Lights::LED_LENGTHS[Lights::Led_index::RIGHT_STRIP],CRGB(red,0,blue));
+	fill_solid(leds,LENGTH,CRGB(red,0,blue));
 
 	FastLED.show();
 }
