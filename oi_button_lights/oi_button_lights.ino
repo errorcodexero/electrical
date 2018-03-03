@@ -1,75 +1,141 @@
-#define IN_LIFTER_A 11
-#define IN_LIFTER_B 12
-#define IN_LIFTER_C 13
-#define IN_COLLECT_OPEN 14
-#define IN_COLLECT_CLOSED 15
-#define IN_HAS_CUBE 16
-#define IN_WING_LOCK_DISABLED 17
-#define IN_ENABLED 0
+class Input {
+  protected:
+  int _pin;
+  
+  public:
+  virtual void init();
+  virtual bool read();
+  
+  Input(int pin) {
+    _pin = pin;
+  }
+};
+    
+class DigitalInput : public Input {
+  public:
+  void init() {
+    pinMode(_pin, INPUT);
+  }
+  
+  bool read() {
+    return digitalRead(_pin) == HIGH;
+  }
+  
+  DigitalInput(int pin):Input(pin) {}
+};
+
+class AnalogInput : public Input {
+  public:
+  void init() {}
+  
+  bool read() {
+    return analogRead(_pin) > 511;
+  }
+  
+  AnalogInput(int pin):Input(pin) {}
+};
+
+class Output {
+  int _pin;
+  bool _state;
+  
+  public:
+  void init() {
+    pinMode(_pin, OUTPUT);
+    _state = false;
+  }
+  
+  void set(bool state) {
+    _state = state;
+  }
+  
+  bool get() {
+    return _state;
+  }
+  
+  void write() {
+    digitalWrite(_pin, _state ? HIGH : LOW);
+  }
+  
+  void write(bool state) {
+    digitalWrite(_pin, state ? HIGH : LOW);
+  }
+  
+  Output(int pin) {
+    _pin = pin;
+  }
+};
+
 #define INPUTS 8
+Input* in_collect_open =       new DigitalInput(12);
+Input* in_collect_closed =     new DigitalInput(13);
+Input* in_has_cube =           new AnalogInput(0);
+Input* in_wing_lock_disabled = new AnalogInput(1);
+Input* in_enabled =            new AnalogInput(2);
+Input* in_lifter_a =           new AnalogInput(3);
+Input* in_lifter_b =           new AnalogInput(4);
+Input* in_lifter_c =           new AnalogInput(5);
 
-#define OUT_FLOOR 1
-#define OUT_EXCHANGE 2
-#define OUT_SWITCH 3
-#define OUT_SCALE 4
-#define OUT_CLIMB 5
-#define OUT_COLLECT_CLOSED 6
-#define OUT_COLLECT_OPEN 7
-#define OUT_EJECT 8
-#define OUT_DROP 9
-#define OUT_WING_RELEASE 10
 #define OUTPUTS 10
+Output* out_floor =            new Output(2);
+Output* out_exchange =         new Output(3);
+Output* out_switch =           new Output(4);
+Output* out_scale =            new Output(5);
+Output* out_climb =            new Output(6);
+Output* out_collect_closed =   new Output(7);
+Output* out_collect_open =     new Output(8);
+Output* out_eject =            new Output(9);
+Output* out_drop =             new Output(10);
+Output* out_wing_release =     new Output(11);
 
-int inputs[INPUTS] = {IN_LIFTER_A, IN_LIFTER_B, IN_LIFTER_C, IN_COLLECT_OPEN, IN_COLLECT_CLOSED, IN_HAS_CUBE, IN_WING_LOCK_DISABLED, IN_ENABLED};
-int outputs[OUTPUTS] = {OUT_FLOOR, OUT_EXCHANGE, OUT_SWITCH, OUT_SCALE, OUT_CLIMB, OUT_COLLECT_CLOSED, OUT_COLLECT_OPEN, OUT_EJECT, OUT_DROP, OUT_WING_RELEASE};
-
-bool output_values[OUTPUTS];
+Input* inputs[INPUTS] = {in_collect_open, in_collect_closed, in_has_cube, in_wing_lock_disabled, in_enabled, in_lifter_a, in_lifter_b, in_lifter_c};
+Output* outputs[OUTPUTS] = {out_floor, out_exchange, out_switch, out_scale, out_climb, out_collect_closed, out_collect_open, out_eject, out_drop, out_wing_release};
 
 void setup() {
   for(int i = 0; i < INPUTS; i++) {
-    pinMode(inputs[i], INPUT);
+    inputs[i]->init();
   }
   for(int i = 0; i < OUTPUTS; i++) {
-    pinMode(outputs[i], OUTPUT);
-    output_values[OUTPUTS] = false;
+    outputs[i]->init();
+    outputs[i]->set(false);
   }
-  output_values[0] = true;
+  outputs[0]->set(true);
 }
 
-void loop() {
-  if(digitalRead(IN_ENABLED) == HIGH) {
+void loop() {  
+  if(in_enabled->read()) {
     int lifter_pos = 0;
-    if(digitalRead(IN_LIFTER_A)) lifter_pos += 4;
-    if(digitalRead(IN_LIFTER_B)) lifter_pos += 2;
-    if(digitalRead(IN_LIFTER_C)) lifter_pos += 1;
-    digitalWrite(OUT_FLOOR, lifter_pos == 1 ? HIGH : LOW);
-    digitalWrite(OUT_EXCHANGE, lifter_pos == 2 ? HIGH : LOW);
-    digitalWrite(OUT_SWITCH, lifter_pos == 3 ? HIGH : LOW);
-    digitalWrite(OUT_SCALE, lifter_pos == 4 ? HIGH : LOW);
-    digitalWrite(OUT_CLIMB, lifter_pos == 5 ? HIGH : LOW);
+    if(in_lifter_a->read()) lifter_pos += 4;
+    if(in_lifter_b->read()) lifter_pos += 2;
+    if(in_lifter_c->read()) lifter_pos += 1;
+    out_floor->write(lifter_pos == 1);
+    out_exchange->write(lifter_pos == 2);
+    out_switch->write(lifter_pos == 3);
+    out_scale->write(lifter_pos == 4);
+    out_climb->write(lifter_pos == 5);
     
-    digitalWrite(OUT_COLLECT_CLOSED, digitalRead(IN_COLLECT_CLOSED));
-    digitalWrite(OUT_COLLECT_OPEN, digitalRead(IN_COLLECT_OPEN));
+    out_collect_closed->write(in_collect_closed->read());
+    out_collect_open->write(in_collect_open->read());
     
-    int has_cube = digitalRead(IN_HAS_CUBE);
-    digitalWrite(OUT_EJECT, has_cube);
-    digitalWrite(OUT_DROP, has_cube);
+    bool has_cube = in_has_cube->read();
+    out_eject->write(has_cube);
+    out_drop->write(has_cube);
     
-    digitalWrite(OUT_WING_RELEASE, digitalRead(IN_WING_LOCK_DISABLED));
+    out_wing_release->write(in_wing_lock_disabled->read());
     
     delay(50);
   } else {
-    bool overflowed = output_values[OUTPUTS - 1];
+    bool overflowed = outputs[OUTPUTS - 1]->get();
     for(int i = OUTPUTS - 2; i >= 0; i--) {
-      if(output_values[i]) {
-        output_values[i] = false;
-        output_values[i + 1] = true;
+      if(outputs[i]->get()) {
+        outputs[i]->set(false);
+        outputs[i + 1]->set(true);
       }
     }
-    if(overflowed) output_values[0] = true;
+    if(overflowed) outputs[0]->set(true);
     
     for(int i = 0; i < OUTPUTS; i++) {
-      digitalWrite(outputs[i], output_values[i] ? HIGH : LOW);
+      outputs[i]->write();
     }
     
     delay(250);
