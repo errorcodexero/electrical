@@ -70,7 +70,7 @@ class Output {
 Input* in_collect_open =		 new DigitalInput(12);
 Input* in_collect_closed =		 new DigitalInput(13);
 Input* in_has_cube =			 new AnalogInput(0);
-Input* in_wing_lock_disabled =   new AnalogInput(1);
+Input* in_wing_ready =           new AnalogInput(1);
 Input* in_enabled =				 new AnalogInput(2);
 Input* in_lifter_a =			 new AnalogInput(3);
 Input* in_lifter_b =			 new AnalogInput(4);
@@ -88,10 +88,11 @@ Output* out_eject =				 new Output(9);
 Output* out_drop =				 new Output(10);
 Output* out_wing_release =		 new Output(11);
 
-Input* inputs[INPUTS] = {in_collect_open, in_collect_closed, in_has_cube, in_wing_lock_disabled, in_enabled, in_lifter_a, in_lifter_b, in_lifter_c};
-Output* outputs[OUTPUTS] = {out_floor, out_exchange, out_switch, out_scale, out_climb, out_collect_closed, out_collect_open, out_eject, out_drop, out_wing_release};
+Input* inputs[INPUTS] = {in_collect_open, in_collect_closed, in_has_cube, in_wing_ready, in_enabled, in_lifter_a, in_lifter_b, in_lifter_c};
+Output* outputs[OUTPUTS] = {out_floor, out_exchange, out_switch, out_scale, out_climb, out_wing_release, out_drop, out_eject, out_collect_open, out_collect_closed};
 
 void setup() {
+	Serial.begin(9600);
 	for(int i = 0; i < INPUTS; i++) {
 		inputs[i]->init();
 	}
@@ -102,7 +103,7 @@ void setup() {
 	outputs[0]->set(true);
 }
 
-void loop() {	
+void loop() {
 	if(in_enabled->read()) {
 		int lifter_pos = 0;
 		if(in_lifter_a->read()) lifter_pos += 4;
@@ -121,23 +122,27 @@ void loop() {
 		out_eject->write(has_cube);
 		out_drop->write(has_cube);
 		
-		out_wing_release->write(in_wing_lock_disabled->read());
+		out_wing_release->write(in_wing_ready->read());
 		
 		delay(50);
 	} else {
 		bool overflowed = outputs[OUTPUTS - 1]->get();
 		for(int i = OUTPUTS - 2; i >= 0; i--) {
+			Serial.println(i);
 			if(outputs[i]->get()) {
 				outputs[i]->set(false);
 				outputs[i + 1]->set(true);
 			}
 		}
-		if(overflowed) outputs[0]->set(true);
+		if(overflowed){
+			outputs[0]->set(true);
+			outputs[OUTPUTS - 1]->set(false);
+		}
 		
 		for(int i = 0; i < OUTPUTS; i++) {
 			outputs[i]->write();
 		}
 		
-		delay(250);
+		delay(110);
 	}
 }
