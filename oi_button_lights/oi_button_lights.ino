@@ -104,6 +104,11 @@ void setup() {
 }
 
 void loop() {
+	//until msp430 sends proper signals, turn all lights on all the time
+	for(int i = 0; i < OUTPUTS; i++) {
+		outputs[i]->write(true);
+	}
+	/*
 	if(in_enabled->read()) {
 		int lifter_pos = 0;
 		if(in_lifter_a->read()) lifter_pos += 4;
@@ -145,4 +150,5 @@ void loop() {
 		
 		delay(110);
 	}
+	*/
 }
