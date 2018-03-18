@@ -19,11 +19,6 @@ void setup(){
 
 void loop(){
 	if(digitalRead(PIN_IN) == LOW){
-		delay(100);
-		fill_solid(leds, LED_COUNT, CRGB::Green);
-		delay(100);
-		fill_solid(leds, LED_COUNT, CRGB::Black);
-		delay(100);
 		fill_solid(leds, LED_COUNT, CRGB::Green);
 	} 
 	else {
