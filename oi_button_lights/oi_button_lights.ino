@@ -1,3 +1,24 @@
+#include <FastLED.h>
+#include "countdown_timer.h"
+
+#define LED_TYPE WS2812B
+#define COLOR_ORDER GRB
+
+struct Cube_collected_signal{
+	static const unsigned LED_COUNT =12;
+	static const uint8_t  BRIGHTNESS = 255 * 0.15;
+	static const unsigned PIN_OUT = 13;
+	static const unsigned BLINK_PAUSE = 100;
+	static const unsigned BLINK_DURATION = 1000;
+};
+
+Countdown_timer cube_collected_signal_blink_timer;
+Countdown_timer cube_collected_signal_timer;
+CRGB cube_collected_signal_blink_color = CRGB(0,255,0);
+bool has_cube_last = false;
+
+CRGB cube_collected_signal_leds[Cube_collected_signal::LED_COUNT];
+
 class Input {
 	protected:
 	int _pin;
@@ -66,15 +87,8 @@ class Output {
 	}
 };
 
-#define INPUTS 8
-Input* in_collect_open =		 new DigitalInput(12);
-Input* in_collect_closed =		 new DigitalInput(13);
-Input* in_has_cube =			 new AnalogInput(0);
-Input* in_wing_ready =           new AnalogInput(1);
-Input* in_enabled =				 new AnalogInput(2);
-Input* in_lifter_a =			 new AnalogInput(3);
-Input* in_lifter_b =			 new AnalogInput(4);
-Input* in_lifter_c =			 new AnalogInput(5);
+#define INPUTS 1
+Input* in_has_cube =		    new DigitalInput(12);
 
 #define OUTPUTS 10
 Output* out_floor =				 new Output(2);
@@ -88,10 +102,12 @@ Output* out_eject =				 new Output(9);
 Output* out_drop =				 new Output(10);
 Output* out_wing_release =		 new Output(11);
 
-Input* inputs[INPUTS] = {in_collect_open, in_collect_closed, in_has_cube, in_wing_ready, in_enabled, in_lifter_a, in_lifter_b, in_lifter_c};
+Input* inputs[INPUTS] = {in_has_cube};
 Output* outputs[OUTPUTS] = {out_floor, out_exchange, out_switch, out_scale, out_climb, out_wing_release, out_drop, out_eject, out_collect_open, out_collect_closed};
 
 void setup() {
+	FastLED.addLeds<LED_TYPE,Cube_collected_signal::PIN_OUT,COLOR_ORDER>(cube_collected_signal_leds, Cube_collected_signal::LED_COUNT);
+	FastLED.setBrightness(Cube_collected_signal::BRIGHTNESS);
 	Serial.begin(9600);
 	for(int i = 0; i < INPUTS; i++) {
 		inputs[i]->init();
@@ -108,29 +124,30 @@ void loop() {
 	for(int i = 0; i < OUTPUTS; i++) {
 		outputs[i]->write(true);
 	}
-	/*
-	if(in_enabled->read()) {
-		int lifter_pos = 0;
-		if(in_lifter_a->read()) lifter_pos += 4;
-		if(in_lifter_b->read()) lifter_pos += 2;
-		if(in_lifter_c->read()) lifter_pos += 1;
-		out_floor->write(lifter_pos == 1);
-		out_exchange->write(lifter_pos == 2);
-		out_switch->write(lifter_pos == 3);
-		out_scale->write(lifter_pos == 4);
-		out_climb->write(lifter_pos == 5);
-		
-		out_collect_closed->write(in_collect_closed->read());
-		out_collect_open->write(in_collect_open->read());
-		
-		bool has_cube = in_has_cube->read();
-		out_eject->write(has_cube);
-		out_drop->write(has_cube);
-		
-		out_wing_release->write(in_wing_ready->read());
-		
-		delay(50);
+	bool hc = in_has_cube->read();
+	Serial.println(hc);
+	if(hc && hc != has_cube_last){
+		cube_collected_signal_timer.set(Cube_collected_signal::BLINK_DURATION);
+		has_cube_last = hc;
+	}
+	if(!cube_collected_signal_timer.done()){
+		if(cube_collected_signal_blink_timer.done()){
+			fill_solid(cube_collected_signal_leds, Cube_collected_signal::LED_COUNT, cube_collected_signal_blink_color);
+			if(cube_collected_signal_blink_color == CRGB(0,255,0)){
+				cube_collected_signal_blink_color = CRGB(0,0,0);
+			} else {
+				cube_collected_signal_blink_color = CRGB(0,255,0);
+			}
+			FastLED.show();
+			cube_collected_signal_blink_timer.set(Cube_collected_signal::BLINK_PAUSE);
+		}
 	} else {
+		fill_solid(cube_collected_signal_leds, Cube_collected_signal::LED_COUNT, CRGB(0,0,0));
+		FastLED.show();
+	}
+
+	/*
+	{
 		bool overflowed = outputs[OUTPUTS - 1]->get();
 		for(int i = OUTPUTS - 2; i >= 0; i--) {
 			Serial.println(i);
