@@ -5,10 +5,10 @@
 #define COLOR_ORDER GRB
 
 struct Cube_collected_signal{
-	static const unsigned LED_COUNT =12;
-	static const uint8_t  BRIGHTNESS = 255 * 0.15;
+	static const unsigned LED_COUNT = 12;
+	static const uint8_t  BRIGHTNESS = 255 * .1;
 	static const unsigned PIN_OUT = 13;
-	static const unsigned BLINK_PAUSE = 100;
+	static const unsigned BLINK_PAUSE = 50;
 	static const unsigned BLINK_DURATION = 1000;
 };
 
@@ -88,19 +88,19 @@ class Output {
 };
 
 #define INPUTS 1
-Input* in_has_cube =		    new DigitalInput(12);
+Input* in_has_cube =          new DigitalInput(12);
 
 #define OUTPUTS 10
-Output* out_floor =				 new Output(2);
-Output* out_exchange =			 new Output(3);
-Output* out_switch =			 new Output(4);
-Output* out_scale =				 new Output(5);
-Output* out_climb =				 new Output(6);
-Output* out_collect_closed =	 new Output(7);
-Output* out_collect_open =		 new Output(8);
-Output* out_eject =				 new Output(9);
-Output* out_drop =				 new Output(10);
-Output* out_wing_release =		 new Output(11);
+Output* out_floor =           new Output(2);
+Output* out_exchange =        new Output(3);
+Output* out_switch =          new Output(4);
+Output* out_scale =           new Output(5);
+Output* out_climb =           new Output(6);
+Output* out_collect_closed =  new Output(7);
+Output* out_collect_open =    new Output(8);
+Output* out_eject =           new Output(9);
+Output* out_drop =            new Output(10);
+Output* out_wing_release =    new Output(11);
 
 Input* inputs[INPUTS] = {in_has_cube};
 Output* outputs[OUTPUTS] = {out_floor, out_exchange, out_switch, out_scale, out_climb, out_wing_release, out_drop, out_eject, out_collect_open, out_collect_closed};
@@ -119,11 +119,18 @@ void setup() {
 	outputs[0]->set(true);
 }
 
+void writeall(bool val) {
+	for(int i = 0; i < OUTPUTS; i++) {
+		outputs[i]->write(val);
+	}
+}
+
 void loop() {
 	//until msp430 sends proper signals, turn all lights on all the time
-	for(int i = 0; i < OUTPUTS; i++) {
+	/*for(int i = 0; i < OUTPUTS; i++) {
 		outputs[i]->write(true);
-	}
+	}*/
+
 	bool hc = in_has_cube->read();
 	Serial.println(hc);
 	if(hc && hc != has_cube_last){
@@ -135,8 +142,10 @@ void loop() {
 			fill_solid(cube_collected_signal_leds, Cube_collected_signal::LED_COUNT, cube_collected_signal_blink_color);
 			if(cube_collected_signal_blink_color == CRGB(0,255,0)){
 				cube_collected_signal_blink_color = CRGB(0,0,0);
+				writeall(true);
 			} else {
 				cube_collected_signal_blink_color = CRGB(0,255,0);
+				writeall(false);
 			}
 			FastLED.show();
 			cube_collected_signal_blink_timer.set(Cube_collected_signal::BLINK_PAUSE);
@@ -144,6 +153,7 @@ void loop() {
 	} else {
 		fill_solid(cube_collected_signal_leds, Cube_collected_signal::LED_COUNT, CRGB(0,0,0));
 		FastLED.show();
+		writeall(false);
 	}
 
 	/*
