@@ -10,10 +10,12 @@ struct Cube_collected_signal{
 	static const unsigned PIN_OUT = 13;
 	static const unsigned BLINK_PAUSE = 50;
 	static const unsigned BLINK_DURATION = 1000;
+	static const unsigned DEBOUNCE_DURATION = 500;
 };
 
 Countdown_timer cube_collected_signal_blink_timer;
 Countdown_timer cube_collected_signal_timer;
+Countdown_timer debounce_timer;
 CRGB cube_collected_signal_blink_color = CRGB(0,255,0);
 bool has_cube_last = false;
 
@@ -132,11 +134,16 @@ void loop() {
 	}*/
 
 	bool hc = in_has_cube->read();
-	Serial.println(hc);
-	if(hc && hc != has_cube_last){
-		cube_collected_signal_timer.set(Cube_collected_signal::BLINK_DURATION);
-		has_cube_last = hc;
+	//Serial.println(hc);
+	if(hc != has_cube_last) {
+		if(!hc) {
+			debounce_timer.set(Cube_collected_signal::DEBOUNCE_DURATION);
+		}
+		if(hc && debounce_timer.done()) {
+			cube_collected_signal_timer.set(Cube_collected_signal::BLINK_DURATION);
+		}
 	}
+	has_cube_last = hc;
 	if(!cube_collected_signal_timer.done()){
 		if(cube_collected_signal_blink_timer.done()){
 			fill_solid(cube_collected_signal_leds, Cube_collected_signal::LED_COUNT, cube_collected_signal_blink_color);
