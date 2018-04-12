@@ -4,22 +4,26 @@
 #define LED_TYPE WS2812B
 #define COLOR_ORDER GRB
 
-struct Cube_collected_signal{
+static const unsigned DEBOUNCE_DURATION = 500;
+
+struct Elevated_indicator {
 	static const unsigned LED_COUNT = 12;
 	static const uint8_t  BRIGHTNESS = 255 * .1;
 	static const unsigned PIN_OUT = 13;
-	static const unsigned BLINK_PAUSE = 50;
-	static const unsigned BLINK_DURATION = 1000;
-	static const unsigned DEBOUNCE_DURATION = 500;
 };
 
-Countdown_timer cube_collected_signal_blink_timer;
-Countdown_timer cube_collected_signal_timer;
-Countdown_timer debounce_timer;
-CRGB cube_collected_signal_blink_color = CRGB(0,255,0);
+Countdown_timer has_cube_debounce_timer;
+static const unsigned HAS_CUBE_BLINK_PAUSE = 50;
+static const unsigned HAS_CUBE_BLINK_DURATION = 1000;
+Countdown_timer indicate_has_cube_blink_timer;
+Countdown_timer indicate_has_cube_timer;
+bool indicate_has_cube_state = true;
+CRGB has_cube_color = CRGB(0, 255, 0);
 bool has_cube_last = false;
 
-CRGB cube_collected_signal_leds[Cube_collected_signal::LED_COUNT];
+CRGB collecting_color = CRGB(255, 153, 0);
+
+CRGB elevated_indicator_leds[Elevated_indicator::LED_COUNT];
 
 class Input {
 	protected:
@@ -89,8 +93,9 @@ class Output {
 	}
 };
 
-#define INPUTS 1
+#define INPUTS 2
 Input* in_has_cube =          new DigitalInput(12);
+Input* in_collecting =        new AnalogInput(0);
 
 #define OUTPUTS 10
 Output* out_floor =           new Output(2);
@@ -104,16 +109,19 @@ Output* out_eject =           new Output(9);
 Output* out_drop =            new Output(10);
 Output* out_wing_release =    new Output(11);
 
-Input* inputs[INPUTS] = {in_has_cube};
+Input* inputs[INPUTS] = {in_has_cube, in_collecting};
 Output* outputs[OUTPUTS] = {out_floor, out_exchange, out_switch, out_scale, out_climb, out_wing_release, out_drop, out_eject, out_collect_open, out_collect_closed};
 
 void setup() {
-	FastLED.addLeds<LED_TYPE,Cube_collected_signal::PIN_OUT,COLOR_ORDER>(cube_collected_signal_leds, Cube_collected_signal::LED_COUNT);
-	FastLED.setBrightness(Cube_collected_signal::BRIGHTNESS);
+	FastLED.addLeds<LED_TYPE, Elevated_indicator::PIN_OUT, COLOR_ORDER>(elevated_indicator_leds, Elevated_indicator::LED_COUNT);
+	FastLED.setBrightness(Elevated_indicator::BRIGHTNESS);
+
 	Serial.begin(9600);
+
 	for(int i = 0; i < INPUTS; i++) {
 		inputs[i]->init();
 	}
+
 	for(int i = 0; i < OUTPUTS; i++) {
 		outputs[i]->init();
 		outputs[i]->set(false);
@@ -128,39 +136,34 @@ void writeall(bool val) {
 }
 
 void loop() {
-	//until msp430 sends proper signals, turn all lights on all the time
-	/*for(int i = 0; i < OUTPUTS; i++) {
-		outputs[i]->write(true);
-	}*/
-
-	bool hc = in_has_cube->read();
-	//Serial.println(hc);
-	if(hc != has_cube_last) {
-		if(!hc) {
-			debounce_timer.set(Cube_collected_signal::DEBOUNCE_DURATION);
+	bool has_cube = in_has_cube->read();
+	if(has_cube != has_cube_last) {
+		if(!has_cube) {
+			has_cube_debounce_timer.set(DEBOUNCE_DURATION);
 		}
-		if(hc && debounce_timer.done()) {
-			cube_collected_signal_timer.set(Cube_collected_signal::BLINK_DURATION);
+		if(has_cube && has_cube_debounce_timer.done()) {
+			indicate_has_cube_timer.set(HAS_CUBE_BLINK_DURATION);
 		}
 	}
-	has_cube_last = hc;
-	if(!cube_collected_signal_timer.done()){
-		if(cube_collected_signal_blink_timer.done()){
-			fill_solid(cube_collected_signal_leds, Cube_collected_signal::LED_COUNT, cube_collected_signal_blink_color);
-			if(cube_collected_signal_blink_color == CRGB(0,255,0)){
-				cube_collected_signal_blink_color = CRGB(0,0,0);
-				writeall(true);
-			} else {
-				cube_collected_signal_blink_color = CRGB(0,255,0);
-				writeall(false);
-			}
+	has_cube_last = has_cube;
+
+	if(!indicate_has_cube_timer.done()){
+		if(indicate_has_cube_blink_timer.done()){
+			fill_solid(elevated_indicator_leds, Elevated_indicator::LED_COUNT, indicate_has_cube_state ? has_cube_color : CRGB(0, 0, 0));
 			FastLED.show();
-			cube_collected_signal_blink_timer.set(Cube_collected_signal::BLINK_PAUSE);
+			writeall(indicate_has_cube_state);
+			indicate_has_cube_blink_timer.set(HAS_CUBE_BLINK_PAUSE);
+			indicate_has_cube_state = !indicate_has_cube_state;
 		}
-	} else {
-		fill_solid(cube_collected_signal_leds, Cube_collected_signal::LED_COUNT, CRGB(0,0,0));
+	} else if(in_collecting->read()) {
+		fill_solid(elevated_indicator_leds, Elevated_indicator::LED_COUNT, collecting_color);
 		FastLED.show();
 		writeall(false);
+	} else {
+		fill_solid(elevated_indicator_leds, Elevated_indicator::LED_COUNT, CRGB(0,0,0));
+		FastLED.show();
+		writeall(false);
+		indicate_has_cube_state = true;
 	}
 
 	/*
