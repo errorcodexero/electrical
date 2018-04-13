@@ -8,7 +8,7 @@ static const unsigned DEBOUNCE_DURATION = 500;
 
 struct Elevated_indicator {
 	static const unsigned LED_COUNT = 12;
-	static const uint8_t  BRIGHTNESS = 255 * .1;
+	static const uint8_t  BRIGHTNESS = 255 * .3;
 	static const unsigned PIN_OUT = 13;
 };
 
@@ -21,7 +21,7 @@ bool indicate_has_cube_state = true;
 CRGB has_cube_color = CRGB(0, 255, 0);
 bool has_cube_last = false;
 
-CRGB collecting_color = CRGB(255, 153, 0);
+CRGB collecting_color = CRGB(255, 0, 0);
 
 CRGB elevated_indicator_leds[Elevated_indicator::LED_COUNT];
 
@@ -94,8 +94,8 @@ class Output {
 };
 
 #define INPUTS 2
-Input* in_has_cube =          new DigitalInput(12);
 Input* in_collecting =        new AnalogInput(0);
+Input* in_has_cube =          new DigitalInput(12);
 
 #define OUTPUTS 10
 Output* out_floor =           new Output(2);
